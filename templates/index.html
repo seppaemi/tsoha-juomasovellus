@@ -1,0 +1,29 @@
+
+{% extends "layout.html" %}
+{% block content %}
+
+<title>Alkoholien Arvostelusovellus</title>
+<br>
+<a>Palvelussa alkoholeja <span style="color: #8b003a;">{{ a_amount }}</span> kpl</a>
+{% if session.user_id %}
+<h1>Tervetuloa {{name}}!</h1>
+<p>Olet kirjautunut sisään.</p>
+<h2><a href="/alcohols">Alkoholit</a></h2>
+<h2><a href="/welcome_page">Oma sivu</a></h2>
+<p>
+{% else %}
+<h1>Tervetuloa!</h1>
+<h2><a href="/alcohols">Alkoholit</a></h2>
+<div class="logblock"> 
+  <h3 class="loglink">Sisäänkirjautuneena voit</h3>
+  <ul>
+    <li>Lisätä uusia alkoholeja</li>
+    <li>Merkitä alkoholeja suosikiksi</li>
+  </ul>
+  <a href="/login" class="loglink"> Sisäänkirjautumiseen</a>
+  <br>
+  <a href="/register" class="loglink">Luo uusi käyttäjätunnus</a>
+</div>
+{% endif %}
+
+{% endblock %}

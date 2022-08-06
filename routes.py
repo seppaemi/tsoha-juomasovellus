@@ -1,14 +1,14 @@
 
 from flask import render_template, request, redirect, session, abort
 from app import app
-import users
-import alcohols
+import users as users
+import alcohols as alcohols
 
 
 @app.route("/")
 def index():
     alcohols_count = alcohols.count()
-    #return render_template("index.html", name=users.username(), a_amount=alcohols_count)
+    return render_template("index.html", name=users.username(), a_amount=alcohols_count)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

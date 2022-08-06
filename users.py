@@ -31,7 +31,7 @@ def username():
     name = str(result.fetchone())[2:-3]
     return name
 
-def username_recipe(u_id):
+def username_alcohols(u_id):
     result = db.session.execute("SELECT username FROM users WHERE id=:id", {"id": u_id})
     name = str(result.fetchone())[2:-3]
     return name
