@@ -1,35 +1,34 @@
-
-DROP TABLE IF EXISTS Users CASCADE;
-DROP TABLE IF EXISTS Alcohols CASCADE;
-DROP TABLE IF EXISTS Favorites CASCADE;
-DROP TABLE IF EXISTS Review CASCADE;
-
-CREATE TABLE IF NOT EXISTS Users (
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    username TEXT UNIQUE CHECK(username IS NOT NULL AND length(username) > 3),
-    password TEXT CHECK(password IS NOT NULL AND length(password) > 7),
-    role INTEGER
+    username TEXT UNIQUE,
+    password TEXT
 );
 
-CREATE TABLE IF NOT EXISTS Alcohols (
+CREATE TABLE alcohols (
     id SERIAL PRIMARY KEY,
-    alcohol_name TEXT UNIQUE,
+    name TEXT UNIQUE,
+    user_id INTEGER REFERENCES users,
     description TEXT,
-    presentages TEXT
-    alcohol_type TEXT
+    persentage DECIMAL,
+    image IMAGE
 );
 
-CREATE TABLE IF NOT EXISTS Favorites (
-    user_id INTEGER REFERENCES Users (id) ON DELETE CASCADE,
-    alcohol_id INTEGER REFERENCES Alcohols (id) ON DELETE CASCADE,
-    UNIQUE(user_id, alcohol_id)
+CREATE TABLE favorites (
+    user_id INTEGER REFERENCES users,
+    alcohol_id INTEGER REFERENCES alcohols
+);
+
+CREATE TABLE tag (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    alcohol_id INTEGER REFERENCES alcohols ON DELETE CASCADE
 );
 
 CREATE TABLE Review (
     id SERIAL PRIMARY KEY,
     rating INTEGER,
     comment TEXT,
-    user_id INTEGER REFERENCES Users(id) ON DELETE CASCADE,
-    alcohol_id INTEGER REFERENCES Alcohols (id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users (id) ON DELETE CASCADE,
+    alcohol_id INTEGER REFERENCES alcohols (id) ON DELETE CASCADE,
     sent_at TIMESTAMP
 );

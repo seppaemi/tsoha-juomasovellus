@@ -1,0 +1,21 @@
+
+<!doctype html>
+<link rel="stylesheet" href="/static/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<div class="header">
+<title>Reseptisovellus</title>
+    <div class="box box1"><h1><a href="/" class="box box1">Arvostele Alkoholisi</a></h1></div>
+    <div class="box box2">
+        {% if session.user_id %}
+        <a href="/logout" class="button"> Kirjaudu ulos</a>
+        {% else %}
+        <a href="/login" class="button">Kirjaudu</a>
+        <a href="/register" class="button">Luo tunnus</a>
+        <a href="/alcohols" class="button">Alkoholit</a>
+        {% endif%}
+        <br>
+    </div>
+</div>
+{% block content %}{% endblock %}
+<br>
+<footer>Tietokantasovellus 2022</footer>
