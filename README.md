@@ -6,11 +6,16 @@ Annetuista esimerkeistä juomasovellus, vähän kuin ravintolasovellus esimerkei
 Sovelluksessa on eri kategorioita eri juomatyypeille, joista voi etsiä kyseiseen juomaan liittyviä arvioita. Käyttäjinä on peruskäyttäjiä ja admineita.
 
 ## Sovelluksen ominaisuuksia:
-- Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen, päättäen haluaako olla peruskäyttäjä vai admin.
-- Käyttäjä näkee sovelluksen etusivulla listan juomatyypeistä sekä viimeksi lisätyn juoman/arvostelun.
-- Käyttäjä voi lisätä juomatyypin alle juoman, lisäämällä juoman nimen ja antamalla sille kuvauksen tai arvostelun. 
+- Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
+- Käyttäjä näkee sovelluksen etusivulla listan juomatyypeistä sekä listan lisätyistä juomista.
+- Käyttäjä voi lisätä juomatyypin alle juoman, lisäämällä juoman nimen ja antamalla sille kuvauksen sekä kategorian. 
 - Käyttäjä voi kirjoittaa uuden arvostelun olemassaolevalle juomalle.
 - Käyttäjä ei voi luoda uutta juomaa, mikäli juoma on jo olemassa.
 - Käyttäjä voi poistaa lisäämiänsä juomia ja arvosteluja.
-- Ylläpitäjä voi lisätä ja poistaa juomia ja kategorioita.
-- Käyttäjä voi tykätä tai unlikettää kommentteja, valiten yhdelle viestille vain jomman kumman. Kunkin kommentin kohdalla voi toimia näin vain kerran
+- Käyttäjä voi lisätä juomia suosikkeihin.
+
+## Palautusten sisällöt:
+### välipalautus 1 :
+- sovelluksen idea
+### välipalautus 2 :
+- sovelluksen etusivu ja kirjautumissivut toimivat
