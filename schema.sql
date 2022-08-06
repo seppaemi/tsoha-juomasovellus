@@ -9,8 +9,7 @@ CREATE TABLE alcohols (
     name TEXT UNIQUE,
     user_id INTEGER REFERENCES users,
     description TEXT,
-    persentage DECIMAL,
-    image IMAGE
+    persentage DECIMAL
 );
 
 CREATE TABLE favorites (

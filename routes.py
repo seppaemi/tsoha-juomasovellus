@@ -2,6 +2,7 @@
 from flask import render_template, request, redirect, session, abort
 from app import app
 import users
+import alcohols
 
 
 @app.route("/")
