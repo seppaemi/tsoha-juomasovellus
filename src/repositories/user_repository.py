@@ -1,0 +1,80 @@
+from werkzeug.security import generate_password_hash
+from db import db as default_db
+from entities.user import User
+
+class UserRepository:
+    def __init__(self, db=default_db):
+        self._db = db
+
+    def login(self, username):
+        try:
+            sql = """SELECT id, username, password, role
+                    FROM users
+                    WHERE username=:username"""
+            return self._db.session.execute(sql,
+                                {"username":username}).fetchone()
+        except:
+            return False
+
+    def register_user(self, user_object: User):
+        try:
+            hash_value = generate_password_hash(user_object.password)
+            values_to_db = {"username":user_object.username,
+                            "password":hash_value,
+                            "role":user_object.role}
+
+            sql = """INSERT INTO users (username,
+                                        password,
+                                        role)
+                    VALUES (:username,
+                            :password,
+                            :role)"""
+            self._db.session.execute(sql, values_to_db)
+            self._db.session.commit()
+        except:
+            return False
+
+    def check_if_username_exists(self, username):
+        sql = """SELECT username
+                FROM users
+                WHERE username=:username"""
+        return bool(self._db.session.execute(sql,
+                        {"username":username}).fetchall())
+
+    def modify_user(self, new_user_object: User):
+        values_to_db = {"user_id":new_user_object.user_id,
+                        "username":new_user_object.username,
+                        "password":new_user_object.password}
+        try:
+            sql ="""UPDATE Users SET
+                    username=:username, password=:password
+                    WHERE id=:user_id"""
+
+            self._db.session.execute(sql, values_to_db)
+            self._db.session.commit()
+            return True
+        except:
+            return False
+
+    def get_current_user(self, id):
+        try:
+            sql = self._db.session.execute("""SELECT *
+                                                FROM Users
+                                                WHERE id=:id""",
+                                            {"id":id}).fetchone()
+            return self.create_user_from_result(sql)
+        except:
+            return False
+
+    def create_user_from_result(self, result_row) -> User:
+        if not result_row:
+            return None
+
+        return User(
+            user_id=result_row[0],
+            username=result_row[1],
+            password=result_row[2],
+            role=result_row[3]
+        )
+
+user_repository = UserRepository()

@@ -1,0 +1,37 @@
+
+<!doctype html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login view</title>
+<link href="../static/css/login.css" rel="stylesheet">
+
+</head>
+  <body>
+    <div class="limiter">
+        <div class="background-login">
+            <div class="wrap-login">
+                <form class="login-form validate-form" action="/" method="POST">
+
+                    <span class="page-title">Welcome to RecipeFinder</span>
+                    <span class="login-form-title">Account Login</span>
+                  <div class="wrap-input username-input validate-input m-b-50" data-validate="Type username">
+                    <input class="input" id="username" name="username" id="username" type="text" placeholder="Username" required>
+                  </div>
+                  <div class="wrap-input password-input validate-input m-b-50" data-validate="Type password">
+                    <input class="input" name="password" id="password" type="password" placeholder="Password" required>
+                  </div>
+                  <div class="sign-in-setup">
+                    <button type="submit" class="btn btn-secondary btn-lg btn-block">SIGN IN</button>
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                  </div>
+                  <div class="signup-form">
+                    <span class="txt1">Don't have an account yet?</span>
+                    <a href="/signup" class="txt2">Sign up!</a>
+                  </div>
+                </form>
+                <div class="login-picture" style="background-image: url('/static/images/login_photo.jpeg');"></div>
+                {% include 'flash.html' %}
+
+        </div>
+    </div>
+  </body>
