@@ -18,14 +18,27 @@
     <input type="number" name="persentages" value={{persentages}}>
   </p>
   <p><b>Kategoria</b></p>
-  <ul id="list">
-    {% for tag in tags %}
-    <li> <input type="text" name="name_{{tag[0]}}" class="input" value="{{tag[0]}}">
-        <input type="submit" name="{{tag[0]}}" class="button" value="Muuta">
-    <input type="submit" name="remove_{{tag[0]}}" class="button" style="background-color: red;" value="X">
-    {% endfor %}
-    <br>
-    <input type="text" name="add_new_tag" class="input" placeholder="uusi">
+  <label for="categories">Choose a category:</label>
+<select name="categories" value="{{category}}">
+  <option value="valkoviini">Valkoviini</option>
+  <option value="punaviini">Punaviini</option>
+  <option value="kuohuviini">Kuohuviini</option>
+  <option value="roseviini">Roseviini</option>
+  <option value="muu mieto alkoholijuoma">Mieto</option>
+  <option value="olut">olut</option>
+  <option value="siideri">siideri</option>
+  <option value="gin">Gin</option>
+  <option value="vodka">Vodka</option>
+  <option value="rommi">Rommi</option>
+  <option value="konjakki">Konjakki</option>
+  <option value="viski">Viski</option>
+  <option value="tequila">Tequila</option>
+  <option value="jälkiruokaviini">Jälkiruokaviini</option>
+  <option value="väkevöity viini">Väkevöity viini</option>
+  <option value="mezcal">Mezcal</option>
+  <option value="likööri">Likööri</option>
+  <option value="Muut vahvat alkoholijuomat">Vahva</option>
+</select>
     <input type="submit" name="new_tag" class="button" style="background-color: #FFC45D;" value="Lisää">
 </ul>
   <p><b>Kuvaus:</b><br>

@@ -38,6 +38,7 @@ td, th {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 100px;
+  background: url(https://www.freewebheaders.com/wp-content/gallery/drinks/awesome-liquors-and-beverages-on-bar-shelves-website-header.jpg);
 }
 
 .box1 {
