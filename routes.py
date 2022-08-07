@@ -56,9 +56,9 @@ def favorites():
     return render_template("favorites.html", name=users.username(),
                            alcohol=userpage.get_favorites(users.user_id()))
 
-@app.route("/alcoholpage")
+@app.route("/user_creations")
 def my_alcohols():
-    return render_template("alcoholpage.html", name=users.username(),
+    return render_template("user_creations.html", name=users.username(),
                            alcohol=userpage.alcohol_from(users.user_id()))
 
 @app.route("/add_new", methods=["GET", "POST"])
@@ -87,7 +87,7 @@ def add_alcohol():
     else:
         return render_template("add_new.html")
 
-@app.route("/alcohols/<int:id>", methods=["GET", "POST"])
+@app.route("/alcoholpage/<int:id>", methods=["GET", "POST"])
 def alcohol(id):
     if request.method == "POST":
         if (session["csrf_token"] != request.form["csrf_token"]):
@@ -120,7 +120,7 @@ def alcohol(id):
             like = "tykätty"
         else:
             like = "tykkää"
-        return render_template("recipe.html", favorite_button=like, creator_id=data[2],
+        return render_template("alcoholpage.html", favorite_button=like, creator_id=data[2],
                                fav_count=favorite, id=str(id), name=data[1],
                                creator=users.username_recipe(data[2]), persentages=data[4],
                                description=data[3], tag=tag_list)
