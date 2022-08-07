@@ -6,8 +6,7 @@ body {
     background-color: oldlace;
 }
 h1 {
-	color: black;
-	text-shadow: 2px 2px 2px #DCDCDC;  
+	color: black;  
 }
 
 h2 {
@@ -19,7 +18,7 @@ h3, h4, h5 {
 }
 
 a {
-	color: #c23376;
+	color: lightpink;
 }
 
 table {
@@ -42,8 +41,7 @@ td, th {
 }
 
 .box1 {
-  color: oldlace;
-  text-shadow: 2px 2px 2px #006847;  
+  color: lightpink;  
   margin: 10px;
   grid-column: 1/3;
   grid-row:1
@@ -63,7 +61,7 @@ td, th {
   padding: 1rem;
 }
 .loglink {
-  color: #000000
+  color: black
 }
 .error {
   color: Red
@@ -72,7 +70,7 @@ td, th {
 
 footer {
   background-color: black;
-  color: white;
+  color: lightpink;
   padding: 0.5rem;
 }
 
@@ -85,7 +83,7 @@ footer {
   text-decoration: none;
    display: inline-block;
    font-size: 16px;
-   margin: 4px 4px;
+   margin: 6px 6px;
    cursor: pointer;
    border-radius: 8px;
  }
@@ -106,8 +104,8 @@ footer {
 
 .input {
   background-color: oldlace;
-  outline-color: #ff00c8;
-  color: #aa005e;
+  outline-color: lightpink;
+  color: lightpink;
    padding: 6px 10px;
    text-align: center;
    text-decoration: none;

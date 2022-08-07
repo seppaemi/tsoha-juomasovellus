@@ -29,7 +29,7 @@
         {% for tag in tags %}
         <li> <input type="text" name="name_{{tag[0]}}" class="input" value="{{tag[0]}}">
             <input type="submit" name="{{tag[0]}}" class="button" value="Muuta">
-        <input type="submit" name="remove_{{tag[0]}}" class="button" style="background-color: red;" value="X">
+        <input type="submit" name="remove_{{tag[0]}}" class="button" style="background-color: lightpink;" value="X">
         {% endfor %}
         <br>
         <input type="text" name="add_new_tag" class="input" placeholder="uusi">
