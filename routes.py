@@ -56,12 +56,12 @@ def favorites():
     return render_template("favorites.html", name=users.username(),
                            alcohol=userpage.get_favorites(users.user_id()))
 
-@app.route("/my_alcohols")
+@app.route("/alcoholpage")
 def my_alcohols():
     return render_template("alcoholpage.html", name=users.username(),
                            alcohol=userpage.alcohol_from(users.user_id()))
 
-@app.route("/new", methods=["GET", "POST"])
+@app.route("/add_new", methods=["GET", "POST"])
 def add_alcohol():
     if request.method == "POST":
         if (session["csrf_token"] != request.form["csrf_token"]):
@@ -87,7 +87,7 @@ def add_alcohol():
     else:
         return render_template("add_new.html")
 
-@app.route("/alcohol/<int:id>", methods=["GET", "POST"])
+@app.route("/alcohols/<int:id>", methods=["GET", "POST"])
 def alcohol(id):
     if request.method == "POST":
         if (session["csrf_token"] != request.form["csrf_token"]):
@@ -108,7 +108,7 @@ def alcohol(id):
             userpage.add_favorite(user_id, id)
             like = "tykätty"
         favorite = alcohols.get_favorite_count(id)
-        return render_template("recipe.html", favorite_button=like, creator_id=data[2],
+        return render_template("alcohols.html", favorite_button=like, creator_id=data[2],
                                fav_count=favorite, id=str(id), name=data[1],
                                creator=users.username_recipe(data[2]), persentages=data[4],
                                description=data[3], tag=tag_list)
