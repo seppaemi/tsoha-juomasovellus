@@ -8,8 +8,8 @@ import tags as tags
 
 @app.route("/")
 def index():
-    alcohols_count = alcohols.get_all()
-    return render_template("index.html", name=users.username(), a_amount=len(alcohols_count))
+    count = alcohols.count()
+    return render_template("index.html", name=users.username(), a_amount=count)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
