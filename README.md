@@ -22,4 +22,11 @@ https://tosha-juomasovellus.herokuapp.com/
 ### välipalautus 1 :
 - sovelluksen idea
 ### välipalautus 2 :
-- sovelluksen etusivu ja kirjautumissivut toimivat
+- sovellus aukeaa herokussa linkkiä painamalla
+- sovellukseen voi luoda tunnuksen sekä kirjautua
+- käyttäjä pääsee omalle sivulleen sekä sen kautta pääsee alkoolinlisäämissivun
+
+- jostain syystä etusivulle ei pääse (alcoholpage.html) enää mitään kautta
+- alkoholeja ei voi lisätä vaikka lisäämissivu aukeaa
+- suosikkisivulle ei pääse enää mitään kautta
+- kommenttien lisäämistä ei ole aloitettu
