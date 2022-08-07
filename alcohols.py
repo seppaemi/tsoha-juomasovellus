@@ -19,24 +19,24 @@ def count():
     sql = "SELECT COUNT(*) FROM alcohols"
     return db.session.execute(sql).fetchone()[0]
 
-def get_alcohol(r_id):
+def get_alcohol(a_id):
     sql = "SELECT * FROM alcohols WHERE id=:id"
-    res = db.session.execute(sql, {"id": r_id}).fetchall()
+    res = db.session.execute(sql, {"id": a_id}).fetchall()
     return res[0]
 
-def is_id_taken(r_id):
+def is_id_taken(a_id):
     sql = "SELECT id FROM alcohols WHERE id=:id"
-    res = db.session.execute(sql, {"id": r_id}).fetchall()
+    res = db.session.execute(sql, {"id": a_id}).fetchall()
     return bool(res)
 
-def is_name_taken(r_name):
+def is_name_taken(a_name):
     sql = "SELECT id FROM alcohols WHERE name=:name"
-    res = db.session.execute(sql, {"name": r_name}).fetchall()
+    res = db.session.execute(sql, {"name": a_name}).fetchall()
     return bool(res)
 
-def get_name(r_id):
+def get_name(a_id):
     sql = "SELECT name FROM alcohols WHERE id=:id"
-    return db.session.execute(sql, {"id": r_id}).fetchone()[0]
+    return db.session.execute(sql, {"id": a_id}).fetchone()[0]
 
 def get_favorite_count(a_id):
     sql = """SELECT COUNT(a.id) FROM alcohols as a JOIN favorites as f ON a.id=f.alcohol_id
