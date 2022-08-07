@@ -91,7 +91,7 @@ def alcohols():
     if request.method == "GET":
         alcohols = alcohols.get_all()
         heading = "Kaikki alkoholit:"
-        tag_list = tags.tags_all()
+        #tag_list = tags.tags_all()
         return render_template("alcohols.html", list_heading=heading, alcohols=alcohols, tags=tag_list)
 
 
