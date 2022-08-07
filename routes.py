@@ -7,7 +7,7 @@ import userpage
 
 @app.route("/")
 def index():
-    return render_template("index.html", name=users.username(), counted=alcohols.count())
+    return render_template("index.html", name=users.username())
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

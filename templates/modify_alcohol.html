@@ -24,7 +24,7 @@
     </p>
     <p class="error">{{ instruction_error }}</p>
 
-    <h4 style="color: #lightpink;">Lisää kategoria</h4>
+    <h4 style="color: lightpink;">Lisää kategoria</h4>
     <ul id="list">
         {% for tag in tags %}
         <li> <input type="text" name="name_{{tag[0]}}" class="input" value="{{tag[0]}}">
@@ -37,7 +37,7 @@
     </ul>
     <br>
     <br>
-    <input type="submit" name="ready" class="button" style="background-color: #lightpink;" value="Valmis - siirry alkoholiin">
+    <input type="submit" name="ready" class="button" style="background-color: lightpink;" value="Valmis - siirry alkoholiin">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <br>
     <br>
