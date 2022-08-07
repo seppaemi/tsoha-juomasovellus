@@ -6,7 +6,10 @@ body {
     background-color: oldlace;
 }
 h1 {
-	color: black;  
+	color: black;
+  text-align: center;
+  padding: 3.5em 1em;
+  font-size: 1.5em;  
 }
 
 h2 {
@@ -37,7 +40,7 @@ td, th {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 100px;
-  background: url(https://www.easterneuropefoods.co.uk/image/cache/catalog/headers/header-alcohol-1170x379-1170x379.jpg);
+  background: url(https://www.easterneuropefoods.co.uk/image/cache/catalog/headers/header-alcohol-1170x379-1170x379.jpg) top center;
 }
 
 .box1 {
