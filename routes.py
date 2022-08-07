@@ -49,7 +49,7 @@ def login():
 
 @app.route("/welcome")
 def welcome():
-    return render_template("welcome.html", name=users.username())
+    return render_template("welcome_page.html", name=users.username())
 
 @app.route("/favorites")
 def favorites():
@@ -80,12 +80,12 @@ def add_alcohol():
         if persentage == "":
             persentage_e = "Anna prosenttimäärä"
         if name_e != "" or persentage_e != "":
-            return render_template("new.html", error1=name_e, error2=persentage_e, name=name, serves=persentage,
+            return render_template("add_new.html", error1=name_e, error2=persentage_e, name=name, serves=persentage,
                                    description=description, tag=tag)
         a_id = alcohols.add_alcohol(name, user_id, persentage, description, tag)
         return redirect("/alcohols/"+str(a_id))
     else:
-        return render_template("new.html")
+        return render_template("add_new.html")
 
 @app.route("/alcohol/<int:id>", methods=["GET", "POST"])
 def alcohol(id):
@@ -156,7 +156,7 @@ def modify(id):
         alc = alcohols.get_alcohol(id)
         if "ready" in request.form:
             return redirect("/recipe/"+str(id))
-        return render_template("modify.html", id=str(id), alcohol=alc,
+        return render_template("modify_alcohol.html", id=str(id), alcohol=alc,
                                tag=alcohol_tags, name_error=name_error, persentage_error=persentage_error,
                                description_error=description_error)
     else:
