@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if session.user_id %}
+<div class="logblock">
+    <a href="/welcome" class="button" style="background-color: lightpink;">Oma sivu</a>
+    <a href="/alcohols" class="button" style="background-color: lightpink;">Alkoholit</a>
+    <a href="/new" class="button" style="background-color: lightpink;">Lisää uusi alkoholi</a>
+    <a href="/favorites" class="button" style="background-color: lightpink;">Suosikit</a>
+    <a href="/my_recipes" class="button" style="background-color: lightpink;">Lisäämäsi alkoholit</a>
+</div>
+{% else %}
+<a href="/alcohols" class="button" style="background-color: lightpink;">Palaa takaisin</a>
+{% endif %}
+{% if session.user_id == creator_id %}
+<form action="/alcohol/{{id}}" method="POST">
+    <h1> {{ name }} 
+        <input type="submit" class="button" value={{favorite_button}}>
+        <a href="/modify/{{id}}" class="button" style="background-color: lightpink; text-shadow: 0px 0px 0px;">
+            Muokkaa
+        </a>
+    </h1> 
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
+{% elif session.user_id %}
+<form action="/alcohol/{{id}}" method="POST">
+    <h1> {{ name }} <input type="submit" class="button" value={{favorite_button}}></h1> 
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
+{% else %}
+<h1> {{ name }} </h1> 
+{% endif %}
+<a>Alkoholi  on lisätty suosikkeihin <b>{{ fav_count }}</b> kertaa</a>
+<p>käyttäjältä <b>{{ creator }}</b></p>
+<p>
+    <b>Prosentteja:</b> {{ persentage }} 
+</p>
+<h3>Kuvaus:</h3>
+{{ description: }}
+<p>
+<form action="/alcohols" method="POST">
+    <h3>Tagit:</h3>
+    {% for tag in tags %}
+    <input type="submit" name="{{ tag[0] }}" class="tag" value="{{tag[0]}}"></input>
+    {% endfor %}
+</form>
+<br>
+<br>
+{% endblock %}

@@ -1,14 +1,10 @@
 from db import db
 
-def add_alcohol(name, user_id, percentage, description):
-    if active == "":
-        active = 0
-    if passive == "":
-        passive = 0
-    sql = """INSERT INTO alcohols (name, user_id, description, persentage)
-            VALUES (:name, :user_id, :description, :persentage) RETURNING id"""
+def add_alcohol(name, user_id, percentage, description, tag):
+    sql = """INSERT INTO alcohols (name, user_id, description, persentage, tag)
+            VALUES (:name, :user_id, :description, :persentage, :tags) RETURNING id"""
     alcohol_id = db.session.execute(sql, {"name":name, "user_id":user_id,
-                                         "instructions":description, "Percentage":float(percentage)}).fetchone()[0]
+                                         "instructions":description, "Percentage":float(percentage), "tag": tag}).fetchone()[0]
     return alcohol_id
 
 def get_all():
@@ -91,7 +87,7 @@ def chage_name(new_name, alcohol_id):
         return ""
     return "Alhoholi '"+new_name+"' on jo luotu"
 
-def change_servings(new_persentage, alcohol_id):
+def change_persentage(new_persentage, alcohol_id):
     if int(new_persentage) < 1:
         return "Annoksia on oltava vähintään 1"
     sql = "UPDATE alcohols SET serves=:serves WHERE id=:alcohol_id"

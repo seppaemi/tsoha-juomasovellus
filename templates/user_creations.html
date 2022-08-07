@@ -1,0 +1,32 @@
+
+{% extends "layout.html" %}
+{% block content %}
+{% if session.user_id %}
+<div class="logblock">
+    <a href="/welcome" class="button" style="background-color:lightpink ;">Oma sivu</a>
+    <a href="/recipes" class="button" style="background-color: lightpink ;">Alkoholit</a>
+    <a href="/new" class="button" style="background-color: lightpink ;">Lisää uusi alkoholi</a>
+    <a href="/favorites" class="button" style="background-color: lightpink ;">Omat suosikit</a>
+</div> 
+<h2>Lisäämäsi alkoholit:</h2>
+<ul>
+    {% for a in alcohols %}
+    <li><a href="/alcohols.py r.id }}">{{ r.name }}</a> | <a href="/modify/{{ r.id }}" class="tag" style="background-color: oldlace;"> muokkaa </a>
+    {% endfor %}
+    </ul>
+<p>
+<p>
+{% else %}
+<h3>Vain sisäänkirjautunut käyttäjä voi toimia tällä sivulla</h3>
+<div class="logblock"> 
+    <h3 class="loglink">Kirjautumalla sisään voit</h3>
+    <ul>
+      <li>Lisätä ja arvostella alkoholeja</li>
+      <li>Merkitä alkoholeja suosikiksi</li>
+    </ul>
+    <a href="/login" class="loglink"> Sisäänkirjautumiseen</a>
+    <br>
+    <a href="/register" class="loglink">Luo käyttäjätunnus</a>
+</div>
+{% endif %}
+{% endblock %}
