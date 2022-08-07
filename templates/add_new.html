@@ -2,12 +2,12 @@
 {% block content %}
 {% if session.user_id %}
 <div class="logblock">
-  <a href="/welcome" class="button" style="background-color: lightpink;">Oma sivu</a>
+  <a href="/welcome_page" class="button" style="background-color: lightpink;">Oma sivu</a>
   <a href="/alcohols" class="button" style="background-color: lightpink;">Alkoholit</a>
   <a href="/favorites" class="button" style="background-color: lightpink;">Suosikit</a>
   <a href="/alcoholpage" class="button" style="background-color: lightpink;">Omat alkoholit</a>
 </div> 
-<form action="/new" method="POST">
+<form action="/add_new" method="POST">
   <h2>Lisää uusi alkoholi</h2>
   <p class="error">{{ error1 }}</p>
   <p><b>Nimi:</b>

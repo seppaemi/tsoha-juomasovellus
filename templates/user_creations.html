@@ -3,15 +3,15 @@
 {% block content %}
 {% if session.user_id %}
 <div class="logblock">
-    <a href="/welcome" class="button" style="background-color:lightpink ;">Oma sivu</a>
-    <a href="/recipes" class="button" style="background-color: lightpink ;">Alkoholit</a>
-    <a href="/new" class="button" style="background-color: lightpink ;">Lisää uusi alkoholi</a>
+    <a href="/welcome_page" class="button" style="background-color:lightpink ;">Oma sivu</a>
+    <a href="/alcools" class="button" style="background-color: lightpink ;">Alkoholit</a>
+    <a href="/add_new" class="button" style="background-color: lightpink ;">Lisää uusi alkoholi</a>
     <a href="/favorites" class="button" style="background-color: lightpink ;">Omat suosikit</a>
 </div> 
 <h2>Lisäämäsi alkoholit:</h2>
 <ul>
     {% for a in alcohols %}
-    <li><a href="/alcohols.py r.id }}">{{ r.name }}</a> | <a href="/modify/{{ r.id }}" class="tag" style="background-color: oldlace;"> muokkaa </a>
+    <li><a href="/alcohols, a.id }}">{{ r.name }}</a> | <a href="/modify/{{ a.id }}" class="tag" style="background-color: oldlace;"> muokkaa </a>
     {% endfor %}
     </ul>
 <p>
