@@ -2,14 +2,14 @@
 from flask import render_template, request, redirect
 from app import app
 import users as users
-import alcohols as alcohols
+import alcohols
 import tags as tags
 
 
 @app.route("/")
 def index():
-    alcohols_count = alcohols.count()
-    return render_template("index.html", name=users.username(), a_amount=alcohols_count)
+    alcohols_count = alcohols.get_all()
+    return render_template("index.html", name=users.username(), a_amount=len(alcohols_count))
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -72,7 +72,7 @@ def alcohols():
                                        + str(alc)+"':")
             if len(alc) > 0:
                 return render_template("alcohols.html",
-                                       error="Ei tuloksia hakusanalla '" + str(incredient)+"'",
+                                       error="Ei tuloksia hakusanalla '" + str(alc)+"'",
                                        list_heading="Kaikki Alkoholit:", alcohols=alcohols,
                                        tags=tag_list)
         if "Alphabetical" in request.form:
@@ -91,7 +91,7 @@ def alcohols():
     if request.method == "GET":
         alcohols = alcohols.get_all()
         heading = "Kaikki alkoholit:"
-        #tag_list = tags.tags_all()
+        tag_list = tags.tags_all()
         return render_template("alcohols.html", list_heading=heading, alcohols=alcohols, tags=tag_list)
 
 
