@@ -5,6 +5,10 @@ Annetuista esimerkeistä juomasovellus, vähän kuin ravintolasovellus esimerkei
 
 Sovelluksessa on eri kategorioita eri juomatyypeille, joista voi etsiä kyseiseen juomaan liittyviä arvioita. Käyttäjinä on peruskäyttäjiä ja admineita.
 
+Sovellus löytyy osoitteesta
+
+https://tosha-juomasovellus.herokuapp.com/
+
 ## Sovelluksen ominaisuuksia:
 - Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
 - Käyttäjä näkee sovelluksen etusivulla listan juomatyypeistä sekä listan lisätyistä juomista.
