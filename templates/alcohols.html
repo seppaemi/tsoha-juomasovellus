@@ -1,0 +1,44 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<form action="/recipes" method="POST">
+    {% if session.user_id %}
+        <div class="logblock">
+            <a href="/welcome" class="button" style="background-color: lightpink;">Minä</a>
+            <a href="/new" class="button" style="background-color: lightpink;">Lisää uusi alkoholi</a>
+            <a href="/favorites" class="button" style="background-color: lightpink;">Suosikit</a>
+            <a href="/my_alcohols" class="button" style="background-color: lightpink;">Omat Alkoholit</a>
+        </div>  
+    {% endif %}
+    <div class="logblock" style="background-color: oldlace">
+        <h1>Haku</h1>
+        <h5>Hae etsimääsi alkoholia:</h5>
+        <input type="text" name="alcohol" class="input" placeholder="Alkoholi"><input type="submit" name="search" class="button" value="Etsi">
+        <p class="error">{{ error }}</p>
+        <h5>Alkoholit kategorioittain:</h5>
+        {% for tag in tags %}
+        <input type="submit" name="{{ tag.name }}" class="tag" value="{{tag[0]}}"></input>
+        {% endfor %}
+        <br>
+    </div>
+    <h1>Kaikki alkoholit</h1>
+    <div>
+        <h5>Järjestä <b>kaikki</b> reseptit:</h5>
+        <input type="submit" name="Anew" class="button" value="Uusin ensin"></input>
+        <input type="submit" name="Apopular" class="button" value="Suosituin ensin"></input>
+        <input type="submit" name="Alphabetical" class="button" value="Järjestä nimen mukaan"></input>
+    </div>
+    <h2>{{ list_heading }}</h2>
+    <ul id="list">
+        {% for alcohol in alcohols %}
+        <li><a href="/alcohol/{{ alcohol.id }}">{{ alcohol.name }}</a>
+        {% endfor %}
+    </ul>
+    <br>
+    </form>
+    <a href="/" class="button" style="background-color: lightpink;">Palaa etusivulle</a><br>
+    {% if session.user_id %}
+    <a href="/welcome" class="button" style="background-color: lightpink;">Oma sivu</a><br>
+    <a href="/logout" class="button" style="background-color: lightpink;">Kirjaudu ulos</a>
+    {% endif %}
+{% endblock %}

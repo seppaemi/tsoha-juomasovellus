@@ -10,6 +10,7 @@ CREATE TABLE alcohols (
     user_id INTEGER REFERENCES users,
     description TEXT,
     persentage DECIMAL
+    average_rating FLOAT
 );
 
 CREATE TABLE favorites (
@@ -23,7 +24,7 @@ CREATE TABLE tag (
     alcohol_id INTEGER REFERENCES alcohols ON DELETE CASCADE
 );
 
-CREATE TABLE Review (
+CREATE TABLE review (
     id SERIAL PRIMARY KEY,
     rating INTEGER,
     comment TEXT,
