@@ -3,12 +3,11 @@ from app import app
 import users
 import alcohols
 import userpage
-import tags
+
 
 @app.route("/")
 def index():
-    alc_count = alcohols.count()
-    return render_template("index.html", name=users.username(), counted=alc_count)
+    return render_template("index.html", name=users.username(), counted=alcohols.count())
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
