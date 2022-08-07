@@ -2,20 +2,20 @@ body {
     margin: auto;
     max-width: 45em;
     font-family: 'Helvetica', 'Arial', sans-serif;
-    color: #006847;
+    color: black;
     background-color: oldlace;
 }
 h1 {
-	color: #793f57b4;
+	color: black;
 	text-shadow: 2px 2px 2px #DCDCDC;  
 }
 
 h2 {
-	color: #680039;
+	color: black;
 }
 
 h3, h4, h5 {
-	color: #c26d8e;	
+	color: black;	
 }
 
 a {
@@ -34,7 +34,7 @@ td, th {
 }
 
 .header {
-  background-color: #301515;
+  background-color: black;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 100px;
@@ -49,7 +49,7 @@ td, th {
 }
 
 .box2 {
-  color: #ff0080;
+  color: lightpink;
   text-align: right;
   margin: 5px;
   grid-column: 3/3;
@@ -57,7 +57,7 @@ td, th {
 }
 
 .logblock {
-  background-color: #ff5d9b;
+  background-color: lightpink;
   color: #222B35;
   padding: 1rem;
 }
@@ -76,7 +76,7 @@ footer {
 }
 
 .button {
-  background-color: #ff00aa;
+  background-color: lightpink;
    border: none;
   color: oldlace;
    padding: 6px 10px;
@@ -90,7 +90,7 @@ footer {
  }
 
  .tag {
-  background-color: #680049;
+  background-color: lightpink;
    border: none;
   color: oldlace;
    padding: 2px 5px;
@@ -98,13 +98,13 @@ footer {
   text-decoration: none;
    display: inline-block;
    font-size: 16px;
-   margin: 2px 2px;
+   margin: 100px 100px;
    cursor: pointer;
    border-radius: 4px;
  }
 
 .input {
-  background-color: whitesmoke;
+  background-color: oldlace;
   outline-color: #ff00c8;
   color: #aa005e;
    padding: 6px 10px;
