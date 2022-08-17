@@ -88,7 +88,7 @@ def add_alcohol():
         return render_template("add_new.html")
 
 @app.route("/alcoholpage/<int:id>", methods=["GET", "POST"])
-def alcohol(id):
+def alcoholpage(id):
     if request.method == "POST":
         if (session["csrf_token"] != request.form["csrf_token"]):
             return abort(403)
@@ -163,7 +163,7 @@ def modify(id):
         return render_template("modify.html", id=str(id), alcohol=alc, tag=alcohol_tags)
 
 @app.route("/alcohols", methods=["GET", "POST"])
-def alcohols():
+def alcohol():
     if request.method == "POST":
         alcohols = alcohols.get_all()
         heading = "Kaikki alkoholit:"
