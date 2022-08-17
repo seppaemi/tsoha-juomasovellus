@@ -10,9 +10,9 @@ CREATE TABLE alcohols (
     creator_id INTEGER REFERENCES users,
     created_at TIMESTAMPTZ,
     viewed INTEGER,
-    title TEXT,
+    name TEXT,
     description TEXT,
-    notes TEXT,
+    persentage TEXT,
     visible INTEGER
 );
 
