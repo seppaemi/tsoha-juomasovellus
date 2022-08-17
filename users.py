@@ -1,65 +1,95 @@
-import os
-from flask import session, request, abort
-from werkzeug.security import check_password_hash, generate_password_hash
 from db import db
+from flask import session
+from werkzeug.security import check_password_hash, generate_password_hash
+from os import urandom
 
-def login(email, password):
-    sql = 'SELECT id, password, username, admin FROM users WHERE email=:email'
-    result = db.session.execute(sql, {'email':email})
-    user = result.fetchone()
-    if not user:
-        return False
-    if check_password_hash(user.password, password):
-        session['user_id'] = user.id
-        session['email'] = email
-        session['username'] = user.username
-        session['admin'] = user.admin
-        session["csrf_token"] = os.urandom(16).hex()
-        return True
-    return False
+
+def check_username_password(username, password, password_2, role):
+    if len(username) < 3 or len(username) > 20:
+        return False, "Käyttäjätunnuksen tulee olla 3-20 merkkiä pitkä"
+    if password != password_2:
+        return False, "Salasanat eivät täsmää."
+    if len(password) < 8:
+        return False, "Salasana on liian lyhyt."
+    if len(password) > 32:
+        return False, "Salasana on liian pitkä."
+    if password == password.lower() or password == password.upper():
+        return False, "Salasanan pitää sisältää pieniä ja suuria kirjaimia."
+    if role != "1" and role != "0":
+        return False, "Valitse rooli"
+    return True, ""
+
+
+def create_user(username, password, password_2, role):
+    check_ok, msg = check_username_password(username, password, password_2, role)
+    if not check_ok:
+        return False, msg
+    hash_value = generate_password_hash(password)
+    sql = """INSERT INTO users (username, password, role) 
+             VALUES (:username, :hash_value, :role)"""
+    try:
+        db.session.execute(sql, {"username": username, "hash_value": hash_value, "role": role})
+    except:
+        return False, "Käyttäjätunnus on varattu."
+    db.session.commit()
+    return True, f"Käyttäjä {username} luotu onnistuneesti!"
+
+
+def check_login(username, password):
+    sql = """SELECT password 
+             FROM users 
+             WHERE username=:username"""
+    result = db.session.execute(sql, {"username": username}).fetchone()
+    if result == None:
+        return False, "Käyttäjätunnus tai salasana väärin."
+    hash_value = result[0]
+    if check_password_hash(hash_value, password):
+        session["username"] = username
+        user_id = get_user_id(username)
+        session["user_id"] = user_id
+        role = get_user_role(user_id)
+        session["role"] = role
+        session["csrf_token"] = urandom(16).hex()
+        return True, ""
+    return False, "Käyttäjätunnus tai salasana väärin."
+
 
 def logout():
-    if user_id():
-        del session['user_id']
-        del session['email']
-        del session['username']
-        del session['admin']
-        del session['csrf_token']
+    del session["username"]
+    del session["user_id"]
+    del session["role"]
+    del session["csrf_token"]
 
-def signup(email, password, username):
-    hash_value = generate_password_hash(password)
+
+def get_user_id(username):
+    sql = """SELECT id 
+             FROM users 
+             WHERE username=:username"""
+    user_id = db.session.execute(sql, {"username": username}).fetchone()[0]
+    return user_id
+
+
+def get_user_role(user_id):
+    sql = """SELECT role 
+             FROM users 
+             WHERE id=:user_id"""
+    role = db.session.execute(sql, {"user_id": user_id}).fetchone()[0]
+    return "admin" if role == 1 else "user"
+
+
+def get_username(user_id):
+    sql = """SELECT username 
+             FROM users 
+             WHERE id=:user_id"""
+    username = db.session.execute(sql, {"user_id": user_id}).fetchone()[0]
+    return username
+
+
+def is_own_profile(id):
     try:
-        sql = '''INSERT INTO users (email,password,
-        username) VALUES (:email,:password,:username)'''
-        db.session.execute(sql,
-        {'email':email,'password':hash_value,'username':username})
-        db.session.commit()
+        if id == session["user_id"]:
+            return True, ""
+        else:
+            return False, "Pääsy evätty."
     except:
-        return False
-    return True
-
-def update_admin_rights(username):
-    try:
-        sql = 'UPDATE users SET admin=True WHERE username=:username'
-        db.session.execute(sql,{'username':username})
-        db.session.commit()
-    except:
-        return False
-    return True
-
-def is_email_taken(email):
-    sql = 'SELECT email FROM users WHERE email=:email'
-    result = db.session.execute(sql, {'email':email})
-    return result.fetchone()
-
-def is_username_taken(username):
-    sql = 'SELECT username FROM users WHERE username=:username'
-    result = db.session.execute(sql, {'username':username})
-    return result.fetchone()
-
-def user_id():
-    return session.get('user_id',0)
-
-def check_csrf():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
+        return False, "Pääsy evätty."
