@@ -163,7 +163,7 @@ def modify(id):
         return render_template("modify.html", id=str(id), alcohol=alc, tag=alcohol_tags)
 
 @app.route("/alcohols", methods=["GET", "POST"])
-def alcohol():
+def alcohols():
     if request.method == "POST":
         alcohols = alcohols.get_all()
         heading = "Kaikki alkoholit:"
