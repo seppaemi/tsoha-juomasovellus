@@ -1,34 +1,55 @@
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    username TEXT UNIQUE,
-    password TEXT
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
+    admin BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE alcohols (
     id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE,
-    user_id INTEGER REFERENCES users,
+    name TEXT NOT NULL,
+    tagid INTEGER REFERENCES tags,
     description TEXT,
-    persentage DECIMAL
-    average_rating FLOAT
+    persentage TEXT NOT NULL,
+    usage TEXT NOT NULL,
+    creator_id INTEGER REFERENCES users,
+    created_at TIMESTAMP DEFAULT NOW(),
+    like_count INTEGER DEFAULT 0,
+    comment_count INTEGER DEFAULT 0,
+    visible INTEGER NOT NULL
 );
 
-CREATE TABLE favorites (
-    user_id INTEGER REFERENCES users,
-    alcohol_id INTEGER REFERENCES alcohols
-);
-
-CREATE TABLE tag (
+CREATE TABLE favourites (
     id SERIAL PRIMARY KEY,
-    name TEXT,
-    alcohol_id INTEGER REFERENCES alcohols ON DELETE CASCADE
+    liker_id INTEGER REFERENCES users,
+    recipe_id INTEGER REFERENCES alcohols
 );
 
-CREATE TABLE review (
+CREATE TABLE ratings (
     id SERIAL PRIMARY KEY,
-    rating INTEGER,
-    comment TEXT,
-    user_id INTEGER REFERENCES users (id) ON DELETE CASCADE,
-    alcohol_id INTEGER REFERENCES alcohols (id) ON DELETE CASCADE,
-    sent_at TIMESTAMP
+    title TEXT NOT NULL,
+    comment TEXT NOT NULL,
+    author_id INTEGER REFERENCES users,
+    alcohol_id INTEGER REFERENCES alcohols,
+    created_at TIMESTAMP DEFAULT NOW(),
+    visible INTEGER NOT NULL
+);
+
+CREATE TABLE tags (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL
+);
+
+
+CREATE TABLE photos (
+    id SERIAL PRIMARY KEY,
+    name TEXT, 
+    data BYTEA,
+    size int,
+    creator_id INTEGER REFERENCES users,
+    alcohol_id INTEGER REFERENCES alcohols,
+    created_at TIMESTAMP DEFAULT NOW(),
+    visible INTEGER NOT NULL
 );

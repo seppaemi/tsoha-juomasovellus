@@ -1,209 +1,239 @@
-from flask import render_template, request, redirect, session, abort
+from flask import render_template, redirect, request, url_for, flash
 from app import app
 import users
 import alcohols
-import userpage
+import photos
+import validation
 
-
-@app.route("/")
+@app.route('/')
 def index():
-    return render_template("index.html", name=users.username())
+    latest = recipes.get_all()
+    popular = recipes.get_popular()
+    commented = recipes.get_commented()
+    types = recipes.get_types()
+    return render_template('index.html', latest=latest, popular=popular, commented=commented,
+    types=types)s
 
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "GET":
-        return render_template("register.html")
-    if request.method == "POST":
-        username = request.form["username"]
-        password1 = request.form["password1"]
-        password2 = request.form["password2"]
-        error_name, error_match, error_length = "", "", ""
-        if password1 != password2:
-            error_match = "Salasanat eivät täsmää"
-        if len(username) < 3 or len(username) > 25:
-            error_name = "Käyttäjänimen oltava 3-25 merkin mittainen. "
-        if users.is_taken(username.lower()):
-            error_name = "Keksi toinen käyttäjänimi"
-        if len(password1) < 7 or len(password1) > 35:
-            error_length = "Salasanan oltava 8-35 merkin mittainen. "
-        if error_name != "" or error_length != "" or error_match != "":
-            return render_template("register.html", e_name=error_name, e_match=error_match,
-                                   e_length=error_length, name=username)
-        if users.register(username.lower(), password1):
-            return redirect("/welcome")
-        else:
-            return render_template("register.html",
-                                   e_name="Rekisteröinti ei onnistunut")
+@app.route('/signup',methods=['GET', 'POST'])
+def signup():
+    if request.method == 'GET':
+        return render_template('signup.html')
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        password2 = request.form['password2']
+        username = request.form['username']
+        if not validation.validate_signup(password, password2, email, username):
+            return redirect("/signup")
+        if users.signup(email, password, username):
+            flash('Sign up done! Please log in', 'success')
+            return render_template('login.html')
+    flash('Sign up failed. Please try again later.')
+    return render_template('signup.html')
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route('/login',methods=['GET', 'POST'])
 def login():
-    if request.method == "GET":
-        return render_template("login.html")
-    if request.method == "POST":
-        username = request.form["username"].lower()
-        password = request.form["password"]
-        if users.login(username, password):
-            return redirect("/welcome")
-        else:
-            return render_template("login.html", error="Väärä käyttäjätunnus tai salasana")
+    if request.method == 'GET':
+        return render_template('login.html')
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        if users.login(email, password):
+            flash('You are now logged in as ' + email + '!', 'success')
+            return redirect('/')
+    flash('Oops! Check email and password', 'error')
+    return render_template('login.html')
 
-@app.route("/welcome")
-def welcome():
-    return render_template("welcome_page.html", name=users.username())
-
-@app.route("/favorites")
-def favorites():
-    return render_template("favorites.html", name=users.username(),
-                           alcohol=userpage.get_favorites(users.user_id()))
-
-@app.route("/user_creations")
-def my_alcohols():
-    return render_template("user_creations.html", name=users.username(),
-                           alcohol=userpage.alcohol_from(users.user_id()))
-
-@app.route("/add_new", methods=["GET", "POST"])
-def add_alcohol():
-    if request.method == "POST":
-        if (session["csrf_token"] != request.form["csrf_token"]):
-            return abort(403)
-        name = request.form["name"]
-        user_id = users.user_id()
-        persentage = request.form["persentages"]
-        description = request.form["description"]
-        tag = request.form["tag"]
-        # e = error
-        name_e, persentage_e = "", ""
-        if name == "":
-            name_e = "Alkoholin nimi"
-        if alcohols.is_name_taken(name):
-            name_e = "Alkoholi on jo luoti"
-        if persentage == "":
-            persentage_e = "Anna prosenttimäärä"
-        if name_e != "" or persentage_e != "":
-            return render_template("add_new.html", error1=name_e, error2=persentage_e, name=name, serves=persentage,
-                                   description=description, tag=tag)
-        a_id = alcohols.add_alcohol(name, user_id, persentage, description, tag)
-        return redirect("/alcohols/"+str(a_id))
-    else:
-        return render_template("add_new.html")
-
-@app.route("/alcoholpage/<int:id>", methods=["GET", "POST"])
-def alcoholpage(id):
-    if request.method == "POST":
-        if (session["csrf_token"] != request.form["csrf_token"]):
-            return abort(403)
-        data = alcohols.get_alcohol(id)
-        user_id = users.user_id()
-        tag_list = tag.tags_for_alcohol(id)
-        for tag in tag_list:
-            if tag[0] in request.form:
-                alcohol = alcohols.all_with_tag(tag[0])
-                heading = "Alkoholit kategoriassa "+tag[0]+":"
-                return render_template("alcohol.html", list_heading=heading, alcohol=alcohol,
-                                       tag=tag_list)
-        if userpage.is_favorite(user_id, id):
-            userpage.remove_favorite(user_id, id)
-            like = "tykkää"
-        else:
-            userpage.add_favorite(user_id, id)
-            like = "tykätty"
-        favorite = alcohols.get_favorite_count(id)
-        return render_template("alcohols.html", favorite_button=like, creator_id=data[2],
-                               fav_count=favorite, id=str(id), name=data[1],
-                               creator=users.username_recipe(data[2]), persentages=data[4],
-                               description=data[3], tag=tag_list)
-    elif alcohols.is_id_taken(id):
-        data = alcohols.get_receipt(id)
-        favorite = alcohols.get_favorite_count(id)
-        tag_list = tag.tags_for_alcohol(id)
-        if userpage.is_favorite(users.user_id(), id):
-            like = "tykätty"
-        else:
-            like = "tykkää"
-        return render_template("alcoholpage.html", favorite_button=like, creator_id=data[2],
-                               fav_count=favorite, id=str(id), name=data[1],
-                               creator=users.username_recipe(data[2]), persentages=data[4],
-                               description=data[3], tag=tag_list)
-    else:
-        return render_template("error.html", message="EI alkoholia!")
-
-
-@app.route("/modify/<int:id>", methods=["GET", "POST"])
-def modify(id):
-    alc = alcohols.get_receipt(id)
-    alcohol_tags = tag.tags_for_alcohol(id)
-    if request.method == "POST":
-        if (session["csrf_token"] != request.form["csrf_token"]):
-            return abort(403)
-        name_error, persentage_error, description_error= "", "", ""
-        if "name" in request.form:
-            name_error = alcohols.chage_name(request.form["a_name"], id)
-        if "persentages" in request.form:
-            persentage_error = alcohols.change_persenrage(request.form["a_serves"], id)
-        if "change_description" in request.form:
-            description_error = alcohols.change_instructions(request.form["description"], id)
-        for tag in alcohol_tags:
-            if tag[0] in request.form:
-                renamed_tag = request.form["name_"+tag[0]]
-                tag.rename_tag(tag[0], renamed_tag, id)
-            if "remove_"+tag[0] in request.form:
-                tag.remove_tag(tag[0], id)
-        if "new_tag" in request.form:
-            tag = request.form["add_new_tag"]
-            tag.add_tag(tag, id)
-            alcohol_tags = tag.tags_for_alcohol(id)
-        alcohol_tags = tag.tags_for_alcohol(id)
-        alc = alcohols.get_alcohol(id)
-        if "ready" in request.form:
-            return redirect("/recipe/"+str(id))
-        return render_template("modify_alcohol.html", id=str(id), alcohol=alc,
-                               tag=alcohol_tags, name_error=name_error, persentage_error=persentage_error,
-                               description_error=description_error)
-    else:
-        return render_template("modify.html", id=str(id), alcohol=alc, tag=alcohol_tags)
-
-@app.route("/alcohols", methods=["GET", "POST"])
-def alcohols():
-    if request.method == "POST":
-        alcohols = alcohols.get_all()
-        heading = "Kaikki alkoholit:"
-        tag_list = tag.tags_all()
-        if "search" in request.form:
-            alc = request.form["alcohol"].lower()
-            if len(alc):
-                alc_id = alcohols.get_alcohol(alc)
-                alcohols_cont_alc = []
-                for aid in alc_id:
-                    alcohols_cont_alc += alcohols.get_alcohol(aid.id)
-                return render_template("alcohols.html", alcohols=alcohols_cont_alc,
-                                       tag=tag_list, list_heading="Alkoholit, joiden nimessä'"
-                                       + str(alc)+"':")
-            if len(alc) > 0:
-                return render_template("alcohols.html",
-                                       error="Ei tuloksia hakusanalla '" + str(alc)+"'",
-                                       list_heading="Kaikki Alkoholit:", alcohols=alcohols,
-                                       tag=tag_list)
-        if "Alphabetical" in request.form:
-            heading = "Kaikki alkoholit aakkkosjärjestyksessä:"
-        if "Anew" in request.form:
-            alcohols = alcohols.all_order_novelty()
-            heading = "Uusin alkoholi ensin:"
-        if "Apopular" in request.form:
-            alcohols = alcohols.all_order_by_favorite()
-            heading = "Suosituin alkoholi ensin:"
-        for tag in tag_list:
-            if tag[0] in request.form:
-                alcohols = alcohols.all_with_tag(tag[0])
-                heading = "Alkoholit kategoriassa "+tag[0]+":"
-        return render_template("alcohols.html", list_heading=heading, alcohols=alcohols, tag=tag_list)
-    if request.method == "GET":
-        alcohols = alcohols.get_all()
-        heading = "Kaikki alkoholit:"
-        tag_list = tag.tags_all()
-        return render_template("alcohols.html", list_heading=heading, alcohols=alcohols, tag=tag_list)
-
-
-@app.route("/logout")
+@app.route('/logout')
 def logout():
     users.logout()
-    return redirect("/")
+    flash('You are now logged out!', 'success')
+    return redirect('/')
+
+@app.route('/admin', methods=['POST'])
+def grant_admin_rights():
+    if request.method == 'POST':
+        users.check_csrf()
+        username = request.form['username']
+        if users.update_admin_rights(username):
+            flash('Admin rights granted!', 'success')
+            return redirect(url_for('get_profile', username=username))
+    flash('Admin rights could not be given.')
+    return redirect(url_for('get_profile', username=username))
+
+# Profile page
+
+@app.route('/profile/<string:username>',methods=['GET'])
+def get_profile(username):
+    if request.method == 'GET':
+        profile_recipes = recipes.get_recipes(username)
+        profile_likes = recipes.get_profile_likes(username)
+        profile_commented = recipes.get_profile_commented(username)
+        return render_template('profile.html', latest=profile_recipes,
+        popular=profile_likes, commented=profile_commented, username=username)
+    return render_template('error.html', message='User was not found.')
+
+# Recipe: new recipe, recipe page, deleting recipe
+
+@app.route('/newrecipe',methods=['GET', 'POST'])
+def addrecipe():
+    form = request.form
+    types = recipes.get_types()
+    if request.method == 'GET':
+        return render_template('newrecipe.html', form=form, types=types)
+    if request.method == 'POST':
+        # Adding recipe details
+        users.check_csrf()
+        name = form['name']
+        description = form['description']
+        typeid = form['typeid']
+        steps = form['steps']
+        ingredients = form['ingredients']
+        if not validation.validate_recipe(name, description, typeid, steps, ingredients):
+            return render_template("/newrecipe.html", form=form, types=types)
+        recipe_id = recipes.add_recipe(name, description, typeid, steps, ingredients)
+        print('onnistuuko paluu', recipe_id)
+        # Adding photo
+        file = request.files["file"]
+        photo_name = file.filename
+        data = file.read()
+        size = len(data)
+        if file:
+            if not validation.validate_photo(file):
+                return render_template("/newrecipe.html", form=form, types=types)
+            photos.add_photo(photo_name, data, size, recipe_id)
+        return redirect(url_for('get_recipe', recipe_id=recipe_id))
+    flash('Adding the recipe failed. Please try again later.', 'error')
+    return render_template("/newrecipe.html", form=form, types=types)
+
+@app.route('/recipe/update/<int:recipe_id>',methods=['GET', 'POST'])
+def updaterecipe(recipe_id):
+    recipe = recipes.get(recipe_id)
+    types = recipes.get_types()
+    if request.method == 'GET':
+        return render_template('updaterecipe.html', form=recipe, types=types)
+    if request.method == 'POST':
+         # Adding recipe details
+        users.check_csrf()
+        form = request.form
+        name = form['name']
+        description = form['description']
+        typeid = form['typeid']
+        steps = form['steps']
+        ingredients = form['ingredients']
+        if not validation.validate_recipe(name, description, typeid, steps, ingredients):
+            return render_template("/updaterecipe.html", form=form, types=types)
+        recipe_id = recipes.update_recipe(recipe_id, name, description, typeid, steps, ingredients)
+        # Adding photo
+        file = request.files["file"]
+        photo_name = file.filename
+        data = file.read()
+        size = len(data)
+        if file:
+            if not validation.validate_photo(file):
+                return render_template("/updaterecipe.html", form=form, types=types)
+            photos.delete_photo(recipe_id)
+            photos.add_photo(photo_name, data, size, recipe_id)
+        return redirect(url_for('get_recipe', recipe_id=recipe_id))
+    flash('You can only update your own recipes. ')
+    return render_template("/updaterecipe.html", form=form, types=types)
+
+@app.route('/recipe/<int:recipe_id>',methods=['GET'])
+def get_recipe(recipe_id):
+    if request.method == 'GET':
+        current_user = users.user_id()
+        recipe = recipes.get(recipe_id)
+        all_comments = recipes.get_comments(recipe_id)
+        comments = recipes.get_comments_count(recipe_id)
+        liked = recipes.has_user_liked(recipe_id, current_user)
+        photo = photos.get_photo_id(recipe_id)
+        return render_template('recipe.html', recipe=recipe,
+        all_comments=all_comments, comments=comments, liked=liked, photo=photo)
+    return render_template('error.html', message='Recipe was not found.')
+
+@app.route('/recipe/delete',methods=['POST'])
+def delete_recipe():
+    recipe_id = request.form['recipe_id']
+    if request.method == 'POST':
+        users.check_csrf()
+        if recipes.delete_recipe(recipe_id):
+            flash('Done! You have now deleted the recipe.')
+            return redirect('/')
+    flash('You can delete only you own recipes.', 'error')
+    return redirect(url_for('get_recipe', recipe_id=recipe_id))
+
+# Recipe likes and comments
+
+@app.route('/recipe/like',methods=['POST'])
+def like_recipe():
+    if request.method == 'POST':
+        users.check_csrf()
+        recipe_id = request.form['recipe_id']
+        if recipes.like_recipe(recipe_id):
+            flash('Done! Your like is now updated ', 'success')
+            return redirect(url_for('get_recipe', recipe_id=recipe_id))
+    return render_template('error.html', message='Something went sideways.')
+
+@app.route('/newcomment',methods=['POST'])
+def addcomment():
+    form = request.form
+    title = form['title']
+    comment = form['comment']
+    recipe = form['recipe_id']
+    if request.method == 'POST':
+        users.check_csrf()
+        if not validation.validate_comment(title, comment, recipe):
+            return redirect(url_for('get_recipe', recipe_id=recipe))
+        if recipes.add_comment(title, comment, recipe):
+            return redirect(url_for('get_recipe', recipe_id=recipe))
+    flash('Adding comment failed. Please try again later.', 'error')
+    return redirect(url_for('get_recipe', recipe_id=recipe))
+
+@app.route('/recipe/comment/delete',methods=['POST'])
+def delete_comment():
+    comment_id = request.form['id']
+    recipe_id = request.form['recipe_id']
+    if request.method == 'POST':
+        users.check_csrf()
+        if recipes.delete_comment(comment_id, recipe_id):
+            flash('Done! You have now deleted the comment.')
+            return redirect(url_for('get_recipe', recipe_id=recipe_id))
+    flash('You can delete only your own comments.', 'error')
+    return redirect(url_for('get_recipe', recipe_id=recipe_id))
+
+# Search and lists by type
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    latest = recipes.get_all()
+    types = recipes.get_types()
+    if request.method == 'GET':
+        return render_template('search.html', recipes=latest, types=types)
+    if request.method == 'POST':
+        searched_word = request.form['query']
+        filtered = recipes.search(searched_word)
+        return render_template('search_result.html', recipes=filtered,
+        types=types, searched_word=searched_word)
+    return render_template('search.html', recipes=latest, types=types)
+
+@app.route('/type/<int:typeid>', methods=['GET'])
+def search_by_type(typeid):
+    by_type = recipes.search_by_type(typeid)
+    types = recipes.get_types()
+    type_name = recipes.get_type_name(typeid)
+    if request.method == 'GET':
+        return render_template('type.html', recipes=by_type, types=types,
+        searched_word=type_name[0])
+    return redirect('/search')
+
+# Showing photos
+
+@app.route("/photo/<int:photo_id>", methods=['GET'])
+def show_photo(photo_id):
+    if request.method == 'GET':
+        photo = photos.get_photo(photo_id)
+        if photo:
+            return photo
+    flash('Oops! Photo does not exist.', 'error')
+    return redirect('/')
+    

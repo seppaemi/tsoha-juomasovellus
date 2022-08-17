@@ -1,51 +1,65 @@
-import secrets
-from flask import session
+import os
+from flask import session, request, abort
 from werkzeug.security import check_password_hash, generate_password_hash
 from db import db
 
-def login(username, password):
-    sql = "SELECT id, password FROM users WHERE username=:username"
-    result = db.session.execute(sql, {"username":username})
+def login(email, password):
+    sql = 'SELECT id, password, username, admin FROM users WHERE email=:email'
+    result = db.session.execute(sql, {'email':email})
     user = result.fetchone()
     if not user:
         return False
-    else:
-        if check_password_hash(user.password, password):
-            session["user_id"] = user.id
-            session["csrf_token"] = secrets.token_hex(16)
-            return True
-        else:
-            return False
-
-def user_id():
-    return session.get("user_id", -1)
-
-def is_taken(name):
-    result = db.session.execute("SELECT id FROM users WHERE username=:username",
-                                {"username": name})
-    name = str(result.fetchone())[2:-3]
-    return name
-
-def username():
-    result = db.session.execute("SELECT username FROM users WHERE id=:id", {"id": user_id()})
-    name = str(result.fetchone())[2:-3]
-    return name
-
-def username_alcohols(u_id):
-    result = db.session.execute("SELECT username FROM users WHERE id=:id", {"id": u_id})
-    name = str(result.fetchone())[2:-3]
-    return name
+    if check_password_hash(user.password, password):
+        session['user_id'] = user.id
+        session['email'] = email
+        session['username'] = user.username
+        session['admin'] = user.admin
+        session["csrf_token"] = os.urandom(16).hex()
+        return True
+    return False
 
 def logout():
-    del session["user_id"]
-    del session["csrf_token"]
+    if user_id():
+        del session['user_id']
+        del session['email']
+        del session['username']
+        del session['admin']
+        del session['csrf_token']
 
-def register(username, password):
+def signup(email, password, username):
     hash_value = generate_password_hash(password)
     try:
-        sql = "INSERT INTO users (username,password) VALUES (:username,:password)"
-        db.session.execute(sql, {"username":username, "password":hash_value})
+        sql = '''INSERT INTO users (email,password,
+        username) VALUES (:email,:password,:username)'''
+        db.session.execute(sql,
+        {'email':email,'password':hash_value,'username':username})
         db.session.commit()
-        return login(username, password)
     except:
         return False
+    return True
+
+def update_admin_rights(username):
+    try:
+        sql = 'UPDATE users SET admin=True WHERE username=:username'
+        db.session.execute(sql,{'username':username})
+        db.session.commit()
+    except:
+        return False
+    return True
+
+def is_email_taken(email):
+    sql = 'SELECT email FROM users WHERE email=:email'
+    result = db.session.execute(sql, {'email':email})
+    return result.fetchone()
+
+def is_username_taken(username):
+    sql = 'SELECT username FROM users WHERE username=:username'
+    result = db.session.execute(sql, {'username':username})
+    return result.fetchone()
+
+def user_id():
+    return session.get('user_id',0)
+
+def check_csrf():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
