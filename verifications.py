@@ -32,7 +32,7 @@ def validate_alcohol(name, description, typeid, persentage, usage):
     if len(description) > 1000:
         flash('Description is too long', 'error')
         return False
-    if len(persentage) > 50:
+    if len(persentage) > 25:
         flash('Persentage too long', 'error')
         return False
     if len(usage) > 500:
