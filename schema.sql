@@ -21,13 +21,13 @@ CREATE TABLE alcohols (
     visible INTEGER NOT NULL
 );
 
-CREATE TABLE favourites (
+CREATE TABLE likes (
     id SERIAL PRIMARY KEY,
     liker_id INTEGER REFERENCES users,
     recipe_id INTEGER REFERENCES alcohols
 );
 
-CREATE TABLE ratings (
+CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     comment TEXT NOT NULL,
