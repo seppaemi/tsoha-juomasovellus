@@ -35,11 +35,11 @@ def list_own_alcohols(id):
     return alcohols
 
 
-def list_tags(id):
+def list_tags():
     sql = """SELECT id, tag 
              FROM tags
              ORDER BY id"""
-    tags = db.session.execute(sql, {"id": id}).fetchall()
+    tags = db.session.execute(sql).fetchall()
     return tags
 
 
