@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+{% block title %}{{ alcohol[3] }}{% endblock %}
+{% block content %}
+<div class="content">
+  <h2>{{ alcohol[4] }}</h2>
+  <p style="color: rgb(94, 94, 94);">
+    Lisännyt: {{ creator }} - {{ alcohol[2].strftime("%d.%m.%Y") }} <br>
+    Arvosana: {{ average }}
+  </p>
+  {% if session.username %}
+  <p>
+    {% if favourite %}
+    <form class="buttons" action="/delete-favourite" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+      <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
+      <input type="submit" value="Poista suosikki">
+    </form>
+    {% else %}
+    <form class="buttons" action="/add-favourite" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+      <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
+      <input type="submit" value="Lisää suosikki">
+    </form>
+    {% endif %}
+    {% if session.user_id == alcohol[1] %}
+    <a href="/modify-alcohol/{{ alcohol[0] }}"><button type="button">Muokkaa lisäämääsi alkoholia</button></a>
+    {% endif %}
+    {% if session.user_id == alcohol[1] or session.role == "admin"%}
+    <form class="buttons" action="/delete-alcohol" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+      <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
+      <input type="submit" onclick="return confirm('Oletko varma että haluat poistaa alkoholin pysyvästi?');" value="Poista alkoholi">
+    </form>
+    {% endif %}
+    <form style="float: right;" action="/grade-alcohol" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+      <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
+      <label for="grade">Arvosana:</label>
+      <select name="grade">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5" selected>5</option>
+      </select>
+      <input type="submit" value="Lähetä">
+    </form>
+  </p>
+  {% endif %}
+  <hr>
+  <p>
+    {{ alcohol[5] }}
+  </p>
+  <p>
+    <ul>
+      {% for n in notes %}
+      <li>{{ n[0] }}</li>
+      {% endfor %}
+    </ul>
+  </p>
+  <p style="white-space: pre-line;">
+    {{ alcohol[6] }}
+  </p>
+  <hr>
+  <h3>Kommentit</h3>
+  {% for c in comments %}
+  <div class="comment">
+    {{ c[0] }} &nbsp; - &nbsp; {{ c[2].strftime("%d.%m.%Y %H:%M") }}
+    {% if c[0] == session.username or session.role == "admin"%}
+    <form class="alcohol" action="/delete-comment" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+      <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
+      <input type="hidden" name="comment_id" value="{{ c[3] }}">
+      <input type="submit" class="btn" onclick="return confirm('Oletko varma että haluat poistaa kommentin pysyvästi?');" value="Poista kommentti">
+    </form>
+    {% endif %}
+    <p>
+      {{ c[1] }}
+    </p>
+  </div>
+  {% endfor %}
+  {% if session.username %}
+  <p>
+    Lisää kommentti (max. 1000 merkkiä): <br>
+    <form action="/add-comment" method="POST" onsubmit="return check(this)">
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+      <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
+      <textarea name="comment" rows="5" cols="40" maxlength="1000"></textarea> <br>
+      <input type="submit" value="Lisää" style="margin-top: 5px;">
+    </form>
+  </p>
+  {% else %}
+  <p>
+    Vain kirjautunut käyttäjä voi jättää kommentin
+  </p>
+  {% endif %}
+</div>
+<script>
+  function check(form) {
+    if (form.comment.value.length > 1000) {
+      alert("Kommentti on liian pitkä.");
+    } else if (form.comment.value.length == 0) {
+      alert("Kommenttikenttä ei voi olla tyhjä. Lisää kommentti.");
+    } else {
+      return true;
+    }
+    return false;
+  }
+</script>
+{% endblock %}

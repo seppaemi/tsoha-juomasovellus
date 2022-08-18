@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+{% block title %}Uusi alkoholi{% endblock %}
+{% block content %}
+<div class="content">
+  {% if session.username %}
+  <h2>Lisää uusi alkoholi</h2>
+  <form action="/add-alcohol" method="POST" onsubmit="return check(this)">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    Nimi: <br>
+    <p>
+      <input class="alcohol" type="text" name="title" id="title" placeholder="Nimi" maxlength="100">
+    </p>
+    Kuvaus: <br>
+    <p>
+      <textarea name="description" placeholder="Kuvaus" maxlength="1000"></textarea>
+    </p>
+    Vivahteet: <br>
+    <p id="notes">
+      <input class="alcohol" type="text" name="note" placeholder="Vivahde" maxlength="100">
+    </p>
+    <p>
+      <button type="button" onclick="add_field()">Lisää rivi</button>
+    </p>
+    Prosentti: <br>
+    <p>
+      <textarea name="persentage" maxlength="8"></textarea>
+    </p>
+    <p><b>Kategoria</b></p>
+    <label for="categories">Choose a category:</label>
+    <select name="categories" value="{{category}}">
+    <option value="valkoviini">Valkoviini</option>
+    <option value="punaviini">Punaviini</option>
+    <option value="kuohuviini">Kuohuviini</option>
+    <option value="roseviini">Roseviini</option>
+    <option value="muu mieto alkoholijuoma">Mieto</option>
+    <option value="olut">olut</option>
+    <option value="siideri">siideri</option>
+    <option value="gin">Gin</option>
+    <option value="vodka">Vodka</option>
+    <option value="rommi">Rommi</option>
+    <option value="konjakki">Konjakki</option>
+    <option value="viski">Viski</option>
+    <option value="tequila">Tequila</option>
+    <option value="jälkiruokaviini">Jälkiruokaviini</option>
+    <option value="väkevöity viini">Väkevöity viini</option>
+    <option value="mezcal">Mezcal</option>
+    <option value="likööri">Likööri</option>
+    <option value="Muut vahvat alkoholijuomat">Vahva</option>
+  </select>
+    <input type="submit" value="Lisää">
+  </form>
+  {% else %}
+  <p>
+    Vain kirjautunut käyttäjä voi lisätä alkoholeja
+  </p>
+  {% endif %}
+</div>
+<script>
+  function add_field() {
+    var x = document.getElementById("notes");
+    var new_field = document.createElement("input");
+    new_field.setAttribute("class", "alcohol");
+    new_field.setAttribute("type", "text");
+    new_field.setAttribute("name", "note");
+    new_field.setAttribute("maxlength", "100");
+    x.append(new_field);
+  }
+</script>
+<script>
+  function check(form) {
+    if (form.title.value.length == 0) {
+      alert("Anna alkoholin nimi.");
+    } else if (form.title.value.length > 100) {
+      alert("Nimi voi olla maksimissaan 100 merkkiä");
+    } else if (form.description.value.length > 1000) {
+      alert("Kuvauksen maksimipituus on 1000 merkkiä.");
+    } else if (form.instruction.value.length > 8) {
+      alert("Prosentin maksimipituus on 8 merkkiä");
+    } else {
+      return true;
+    }
+    return false;
+  }
+</script>
+{% endblock %}

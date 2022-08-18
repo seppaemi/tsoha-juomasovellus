@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Omat sivut{% endblock %}
+{% block content %}
+<div class="content">
+  <h2>{{ session.username }}</h2>
+  <hr>
+  <h2>Lisäämäsi alkoholit</h2>
+  <p>
+    {% for a in alcohols %}
+    <a href="/alcohol/{{ a[0] }}">{{ a[1] }}</a> <br>
+    {% endfor %}
+  </p>
+  <h2>Suosikkisi</h2>
+  <p>
+    {% for f in favourites %}
+    <a href="/alcohol/{{ f[0] }}">{{ f[1] }}</a> <br>
+    {% endfor %}
+  </p>
+</div>
+{% endblock %}

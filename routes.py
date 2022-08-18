@@ -35,7 +35,7 @@ def search():
     sortby = request.args["sortby"]
     orderby = request.args["orderby"]
     results = alcohols.search(keyword, sortby, orderby)
-    return render_template("result.html", results=results, keyword=keyword, sortby=sortby, orderby=orderby)
+    return render_template("rate.html", results=results, keyword=keyword, sortby=sortby, orderby=orderby)
 
 
 @app.route("/alcohol/<int:id>")

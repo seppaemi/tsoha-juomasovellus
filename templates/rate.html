@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}Haku{% endblock %}
+{% block content %}
+<div class="content">
+  <h2>Tulokset haulla "{{ keyword }}"</h2>
+  <form action="/search" method="GET">
+    <select name="sortby">
+      {% if sortby == 'added' %}
+      <option value="added" selected>Lisäyspäivä</option>
+      <option value="grade">Arvosana</option>
+      <option value="views">Katselukerrat</option>
+      {% elif sortby == 'grade' %}
+      <option value="added">Lisäyspäivä</option>
+      <option value="grade" selected>Arvosana</option>
+      <option value="views">Katselukerrat</option>
+      {% else %}
+      <option value="added">Lisäyspäivä</option>
+      <option value="grade">Arvosana</option>
+      <option value="views" selected>Katselukerrat</option>
+      {% endif %}
+    </select>
+    <select name="orderby">
+      {% if orderby == 'desc' %}
+      <option value="asc">Nouseva</option>
+      <option value="desc" selected>Laskeva</option>
+      {% else %}
+      <option value="asc" selected>Nouseva</option>
+      <option value="desc">Laskeva</option>
+      {% endif %}
+    </select>
+    <input type="hidden" name="keyword" value="{{ keyword }}">
+    <input type="submit" value="Järjestä">
+  </form>
+  <p>
+    {% for r in results %}
+    <a href="/alcohol/{{ a[0] }}">{{ a[1] }}</a> <br>
+    {% endfor %}
+  </p>
+</div>
+{% endblock %}

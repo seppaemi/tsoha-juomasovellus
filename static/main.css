@@ -1,117 +1,122 @@
 body {
-    margin: auto;
-    max-width: 100em;
-    font-family: 'Times New Roman', Times, serif;
-    color: black;
-    background-color: oldlace;
-}
-h1 {
-	color: black;
-  text-align: center;  
+  margin: auto;
+  max-width: 40em;
+  font-family: 'Times New Roman', Times, serif;
+  color: black (30, 30, 30);
+  background-color: oldlace (230, 230, 230);
 }
 
-h2 {
-	color: black;
-}
-
-h3, h4, h5 {
-	color: black;	
-}
-
-a {
-	color: lightpink;
-}
-
-table {
-    width: 80%;
-}
-
-td, th {
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
-    padding: 0.5rem
-}
-
-.header {
-  background-color: black;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 100px;
+.content {
+  background-color: lightpink;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 20px;
+  border-radius: 6px;
   background: url(https://www.easterneuropefoods.co.uk/image/cache/catalog/headers/header-alcohol-1170x379-1170x379.jpg) top center;
 }
 
-.box1 {
-  color: black;  
-  margin: 10px;
-  grid-column: 1/3;
-  grid-row:1
-}
-
-.box2 {
-  color: lightpink;
-  text-align: right;
-  margin: 5px;
-  grid-column: 3/3;
-  grid-row: 1;
-}
-
-.logblock {
+.top {
   background-color: lightpink;
-  color: #222B35;
-  padding: 1rem;
-}
-.loglink {
-  color: black
-}
-.error {
-  color: Red
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
 }
 
+h1 {
+  color: black;
+  text-align: center;
+}
 
-footer {
-  background-color: black;
+h2 {
+  color: black;
+  letter-spacing: 3px;
+}
+
+h3 {
+  color: black;
+  letter-spacing: 1.5px;
+}
+
+nav {
   color: lightpink;
-  padding: 0.5rem;
+  padding-left: 9px;
 }
 
-.button {
-  background-color: lightpink;
-   border: none;
-  color: oldlace;
-   padding: 6px 10px;
-   text-align: center;
+a.nav:link {
+  color: black;
   text-decoration: none;
-   display: inline-block;
-   font-size: 16px;
-   margin: 6px 6px;
-   cursor: pointer;
-   border-radius: 8px;
- }
+  padding: 8px 5px;
+  display: inline-block;
+}
 
- .tag {
-  background-color: lightpink;
-   border: none;
-  color: oldlace;
-   padding: 2px 5px;
-   text-align: center;
+a.nav:visited {
+  color: black;
+}
+
+a.nav:hover {
+  background-color:lightpink;
+  border-radius: 3px;
+}
+
+a:link {
+  color: black;
   text-decoration: none;
-   display: inline-block;
-   font-size: 16px;
-   margin: 100px 100px;
-   cursor: pointer;
-   border-radius: 4px;
- }
+}
 
-.input {
-  background-color: oldlace;
-  outline-color: lightpink;
+a:visited {
+  color: black;
+}
+
+a:hover {
+  color: lightpink(95, 95, 95);
+}
+
+a.header:link {
+  color: black;
+  text-decoration: none;
+}
+
+a.header:visited {
+  color: black;
+}
+
+form.nav {
+  float: right;
+  padding: 8px 14px;
+}
+
+input {
+  margin-bottom: 8px;
+}
+
+input.alcohol {
+  width: 300px;
+}
+
+form.alcohol {
+  float: right;
+}
+
+textarea {
+  font-family: 'Times New Roman', Times, serif;
+  width: 300px;
+  height: 100px;
+  resize: vertical;
+}
+
+.comment {
+  padding: 8px 14px;
+  background-color: oldlace(221, 221, 221);
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+}
+
+form.buttons {
   color: lightpink;
-   padding: 6px 10px;
-   text-align: center;
-   text-decoration: none;
-   display: inline-block;
-   font-size: 16px;
-   margin: 4px 4px;
-   border-radius: 8px;
+  display: inline-block;
 }

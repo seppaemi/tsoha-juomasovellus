@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Kirjaudu sisään{% endblock %}
+{% block content %}
+<div class="content">
+  {% if not session.username %}
+  <h2>Kirjaudu sisään</h2>
+  <form action="/login" method="POST" onsubmit="return check(this)">
+    <input type="text" name="username" placeholder="Käyttäjätunnus" minlength="3" maxlength="20"> <br>
+    <input type="password" name="password" placeholder="Salasana" minlength="8", maxlength="32"> <br>
+    <input type="submit" value="Kirjaudu">
+  </form>
+  <p>
+    {{ error }}
+  </p>
+  {% else %}
+  <p>
+    Sisään kirjautunut käyttäjä: {{ session.username }}.
+  </p>
+  {% endif %}
+</div>
+<script>
+  function check(form) {
+    if (form.username.value.length == 0 || form.password.value.length == 0) {
+      alert("Tarkasta käyttäjätunnus ja salasana");
+    } else {
+      return true;
+    }
+    return false;
+  }
+</script>
+{% endblock %}
