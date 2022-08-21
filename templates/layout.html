@@ -3,24 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
   <title>Alkoholien arviointisovellus - {% block title %}{% endblock %}</title>
 </head>
 <body>
   <div class="top">
     <a class="header" href="/"><h1>Arvostele alkoholisi</h1></a>
     <nav>
-      <a class="nav" href="/all-alcohols">Alkoholit</a>
+      <a class="nav" href="/all-alcs">Alkoholit</a>
       {% if session.username %}
-      <a class="nav" href="/profile/{{ session.user_id }}">Omat sivut</a>
-      <a class="nav" href="/add-alcohol">Lisää alkoholi</a>
+      <a class="nav" href="/profile/{{ session.user_id }}">Oma sivu</a>
+      <a class="nav" href="/add-alc">Uusi alkoholi</a>
       <a class="nav" href="/logout">Kirjaudu ulos</a>
       {% else %}
       <a class="nav" href="/login">Kirjaudu sisään</a>
       <a class="nav" href="/create-user">Luo tunnus</a>
       {% endif %}
       <form class="nav" action="/search" method="GET">
-        <input type="text" name="keyword" placeholder="Hae reseptejä">
+        <input type="text" name="keyword" placeholder="Hae alkoholia">
         <input type="hidden" name="sortby" value="added">
         <input type="hidden" name="orderby" value="desc">
         <input type="submit" value="Etsi">

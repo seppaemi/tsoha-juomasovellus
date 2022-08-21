@@ -47,7 +47,7 @@ def delete_comment(id):
         db.session.execute(sql, {"id": id})
         db.session.commit()
         return True, ""
-    return False, "Ei sallittu"
+    return False, "Ei sallittu."
 
 
 def grade_alcohol(alcohol_id, grade):
@@ -83,7 +83,7 @@ def check_grade(grade):
 def alcohol_exists(alcohol_id):
     try:
         sql = """SELECT COUNT(*) 
-                FROM alcohols
+                FROM alcohols 
                 WHERE id=:alcohol_id 
                 AND visible=1"""
         result = db.session.execute(sql, {"alcohol_id": alcohol_id}).fetchone()[0]
@@ -94,7 +94,7 @@ def alcohol_exists(alcohol_id):
 
 def check_comment(comment):
     if len(comment) == 0:
-        return False, "Lisää kommentti."
+        return False, "Kommentti on tyhjä."
     if len(comment) > 1000:
         return False, "Kommentti on liian pitkä."
     return True, ""

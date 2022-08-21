@@ -10,16 +10,16 @@ CREATE TABLE alcohols (
     creator_id INTEGER REFERENCES users,
     created_at TIMESTAMPTZ,
     viewed INTEGER,
-    name TEXT,
+    title TEXT,
     description TEXT,
-    persentage TEXT,
+    instruction TEXT,
     visible INTEGER
 );
 
-CREATE TABLE notes (
+CREATE TABLE ingredients (
     id SERIAL PRIMARY KEY,
     alcohol_id INTEGER REFERENCES alcohols,
-    notes TEXT,
+    ingredient TEXT,
     visible INTEGER
 );
 

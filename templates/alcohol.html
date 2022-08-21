@@ -1,12 +1,11 @@
-<!DOCTYPE html>
 {% extends "layout.html" %}
 {% block title %}{{ alcohol[3] }}{% endblock %}
 {% block content %}
 <div class="content">
   <h2>{{ alcohol[4] }}</h2>
-  <p style="color: rgb(94, 94, 94);">
+  <p style="color: lightpink(94, 94, 94);">
     Lisännyt: {{ creator }} - {{ alcohol[2].strftime("%d.%m.%Y") }} <br>
-    Arvosana: {{ average }}
+    Keskiarvo: {{ average }}
   </p>
   {% if session.username %}
   <p>
@@ -14,28 +13,28 @@
     <form class="buttons" action="/delete-favourite" method="POST">
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
       <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
-      <input type="submit" value="Poista suosikki">
+      <input type="submit" value="Poista suosikeista">
     </form>
     {% else %}
     <form class="buttons" action="/add-favourite" method="POST">
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
       <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
-      <input type="submit" value="Lisää suosikki">
+      <input type="submit" value="Lisää suosikeihin">
     </form>
     {% endif %}
     {% if session.user_id == alcohol[1] %}
-    <a href="/modify-alcohol/{{ alcohol[0] }}"><button type="button">Muokkaa lisäämääsi alkoholia</button></a>
+    <a href="/modify-alc/{{ alcohol[0] }}"><button type="button">Muokkaa alkoholia</button></a>
     {% endif %}
     {% if session.user_id == alcohol[1] or session.role == "admin"%}
-    <form class="buttons" action="/delete-alcohol" method="POST">
+    <form class="buttons" action="/delete-alc" method="POST">
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
       <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
-      <input type="submit" onclick="return confirm('Oletko varma että haluat poistaa alkoholin pysyvästi?');" value="Poista alkoholi">
+      <input type="submit" onclick="return confirm('Oletko varma?');" value="Poista alkoholi">
     </form>
     {% endif %}
-    <form style="float: right;" action="/grade-alcohol" method="POST">
+    <form style="float: right;" action="/grade-alc" method="POST">
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-      <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
+      <input type="hidden" name="alcohol" value="{{ alcohol[0] }}">
       <label for="grade">Arvosana:</label>
       <select name="grade">
         <option value="1">1</option>
@@ -54,8 +53,8 @@
   </p>
   <p>
     <ul>
-      {% for n in notes %}
-      <li>{{ n[0] }}</li>
+      {% for i in ingredients %}
+      <li>{{ i[0] }}</li>
       {% endfor %}
     </ul>
   </p>
@@ -72,7 +71,7 @@
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
       <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
       <input type="hidden" name="comment_id" value="{{ c[3] }}">
-      <input type="submit" class="btn" onclick="return confirm('Oletko varma että haluat poistaa kommentin pysyvästi?');" value="Poista kommentti">
+      <input type="submit" class="btn" onclick="return confirm('Oletko varma?');" value="Poista kommentti">
     </form>
     {% endif %}
     <p>
@@ -82,17 +81,17 @@
   {% endfor %}
   {% if session.username %}
   <p>
-    Lisää kommentti (max. 1000 merkkiä): <br>
+    Lisää kommentti: <br>
     <form action="/add-comment" method="POST" onsubmit="return check(this)">
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-      <input type="hidden" name="alcohol_id" value="{{ alcohol[0] }}">
+      <input type="hidden" name="alcohol_id" value="{{ alc[0] }}">
       <textarea name="comment" rows="5" cols="40" maxlength="1000"></textarea> <br>
       <input type="submit" value="Lisää" style="margin-top: 5px;">
     </form>
   </p>
   {% else %}
   <p>
-    Vain kirjautunut käyttäjä voi jättää kommentin
+    Kirjaudu sisään kommentoidaksesi.
   </p>
   {% endif %}
 </div>
@@ -101,7 +100,7 @@
     if (form.comment.value.length > 1000) {
       alert("Kommentti on liian pitkä.");
     } else if (form.comment.value.length == 0) {
-      alert("Kommenttikenttä ei voi olla tyhjä. Lisää kommentti.");
+      alert("Kommentti on tyhjä.");
     } else {
       return true;
     }

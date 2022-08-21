@@ -5,8 +5,10 @@ from os import urandom
 
 
 def check_username_password(username, password, password_2, role):
-    if len(username) < 3 or len(username) > 20:
-        return False, "Käyttäjätunnuksen tulee olla 3-20 merkkiä pitkä"
+    if len(username) < 3:
+        return False, "Antamasi käyttäjätunnus on liian lyhyt."
+    if len(username) > 20:
+        return False, "Antamasi käyttäjätunnus on liian pitkä."
     if password != password_2:
         return False, "Salasanat eivät täsmää."
     if len(password) < 8:
@@ -16,7 +18,7 @@ def check_username_password(username, password, password_2, role):
     if password == password.lower() or password == password.upper():
         return False, "Salasanan pitää sisältää pieniä ja suuria kirjaimia."
     if role != "1" and role != "0":
-        return False, "Valitse rooli"
+        return False, "Valitse rooliksi käyttäjä tai ylläpitäjä."
     return True, ""
 
 
@@ -32,7 +34,7 @@ def create_user(username, password, password_2, role):
     except:
         return False, "Käyttäjätunnus on varattu."
     db.session.commit()
-    return True, f"Käyttäjä {username} luotu onnistuneesti!"
+    return True, f"Tunnus {username} luotu onnistuneesti!"
 
 
 def check_login(username, password):
