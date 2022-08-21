@@ -22,7 +22,7 @@ def list_alcohols(tag_id=None):
                  FROM alcohols
                  WHERE visible=1
                  ORDER BY id DESC"""
-    alcs = db.session.execute(sql)
+    alcs = db.session.execute(sql).fetchall()
     return alcs
 
 
@@ -39,7 +39,7 @@ def list_own_alcohols(id):
 def list_tags():
     sql = """SELECT id, tag 
              FROM tags"""
-    tags = db.session.execute(sql)
+    tags = db.session.execute(sql).fetchall()
     return tags
 
 
