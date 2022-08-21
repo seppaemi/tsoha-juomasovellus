@@ -7,7 +7,7 @@ Sovelluksessa on eri kategorioita eri juomatyypeille, joista voi etsiä kyseisee
 
 Sovellus löytyy osoitteesta
 
-https://tosha-juomasovellus.herokuapp.com/
+https://tsoha-juomasovellus.herokuapp.com/
 
 ## Sovelluksen ominaisuuksia:
 - Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
@@ -30,3 +30,7 @@ https://tosha-juomasovellus.herokuapp.com/
 - alkoholeja ei voi lisätä vaikka lisäämissivu aukeaa
 - suosikkisivulle ei pääse enää mitään kautta
 - kommenttien lisäämistä ei ole aloitettu
+### välipalautus 3 :
+- mikään ei enää toimi paitsi kirjautuminen
+- kommenttien lisääminen aloitettu ja ne toimivat vielä jonkin aikaa sitten
+- db.session.execute(sql).fetchall() 'NoneType' object has no attribute 'drivername' korjataan loppupalautukseen mennessä
