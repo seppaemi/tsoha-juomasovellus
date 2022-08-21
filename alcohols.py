@@ -1,3 +1,4 @@
+from unittest import skip
 from db import db
 from flask import session
 
@@ -36,10 +37,7 @@ def list_own_alcohols(id):
 
 
 def list_tags():
-    sql = """SELECT id, tag 
-             FROM tags"""
-    tags = db.session.execute(sql).fetchall()
-    return tags
+    skip
 
 
 def search(keyword, sortby, orderby):
