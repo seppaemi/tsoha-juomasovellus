@@ -33,4 +33,5 @@ https://tsoha-juomasovellus.herokuapp.com/
 ### välipalautus 3 :
 - mikään ei enää toimi paitsi kirjautuminen
 - kommenttien lisääminen aloitettu ja ne toimivat vielä jonkin aikaa sitten
-- db.session.execute(sql).fetchall() 'NoneType' object has no attribute 'drivername' korjataan loppupalautukseen mennessä
+- db.session.execute(sql).fetchall() 'NoneType' object has no attribute 'drivername' korjataan loppupalautukseen mennessä mikäli osataan
+- Korjaan taulut loppupalautukseen mennessä koska jostain syystä niissäkin on programmingerror
