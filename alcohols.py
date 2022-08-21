@@ -1,4 +1,3 @@
-from unittest import skip
 from db import db
 from flask import session
 
@@ -22,7 +21,7 @@ def list_alcohols(tag_id=None):
                  FROM alcohols
                  WHERE visible=1
                  ORDER BY id DESC"""
-    alcs = db.session.execute(sql).fetchall()
+        alcs = db.session.execute(sql).fetchall()
     return alcs
 
 
