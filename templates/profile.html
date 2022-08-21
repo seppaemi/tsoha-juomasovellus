@@ -1,39 +1,19 @@
 {% extends "layout.html" %}
-{% block title %}Haku{% endblock %}
+{% block title %}Omat sivut{% endblock %}
 {% block content %}
 <div class="content">
-  <h2>Tulokset haulla "{{ keyword }}"</h2>
-  <form action="/search" method="GET">
-    <select name="sortby">
-      {% if sortby == 'added' %}
-      <option value="added" selected>Lisäyspäivä</option>
-      <option value="grade">Arvosana</option>
-      <option value="views">Katselukerrat</option>
-      {% elif sortby == 'grade' %}
-      <option value="added">Lisäyspäivä</option>
-      <option value="grade" selected>Arvosana</option>
-      <option value="views">Katselukerrat</option>
-      {% else %}
-      <option value="added">Lisäyspäivä</option>
-      <option value="grade">Arvosana</option>
-      <option value="views" selected>Katselukerrat</option>
-      {% endif %}
-    </select>
-    <select name="orderby">
-      {% if orderby == 'desc' %}
-      <option value="asc">Nouseva</option>
-      <option value="desc" selected>Laskeva</option>
-      {% else %}
-      <option value="asc" selected>Nouseva</option>
-      <option value="desc">Laskeva</option>
-      {% endif %}
-    </select>
-    <input type="hidden" name="keyword" value="{{ keyword }}">
-    <input type="submit" value="Järjestä">
-  </form>
+  <h2>{{ session.username }}</h2>
+  <hr>
+  <h2>Omat alkoholit</h2>
   <p>
-    {% for r in results %}
-    <a href="/alc/{{ r[0] }}">{{ r[1] }}</a> <br>
+    {% for a in alcohols %}
+    <a href="/alc/{{ a[0] }}">{{ i[1] }}</a> <br>
+    {% endfor %}
+  </p>
+  <h2>Suosikit</h2>
+  <p>
+    {% for f in favourites %}
+    <a href="/alc/{{ f[0] }}">{{ f[1] }}</a> <br>
     {% endfor %}
   </p>
 </div>

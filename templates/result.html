@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 {% extends "layout.html" %}
 {% block title %}Haku{% endblock %}
 {% block content %}
@@ -34,7 +33,7 @@
   </form>
   <p>
     {% for r in results %}
-    <a href="/alcohol/{{ a[0] }}">{{ a[1] }}</a> <br>
+    <a href="/alc/{{ r[0] }}">{{ r[1] }}</a> <br>
     {% endfor %}
   </p>
 </div>
