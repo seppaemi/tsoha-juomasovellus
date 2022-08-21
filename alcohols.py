@@ -19,6 +19,7 @@ def list_alcohols(tag_id=None):
     else:
         sql = """SELECT id, title 
                  FROM alcohols
+                 WHERE visible=1
                  ORDER BY id DESC"""
         alcs = db.session.execute(sql).fetchall()
     return alcs
@@ -149,7 +150,7 @@ def get_alcohol(alcohol_id):
         sql = """SELECT * 
                  FROM alcohols 
                  WHERE id=:alcohol_id"""
-        alc = db.session.execute(sql, {"alcohol_id": Alcohol_id}).fetchone()
+        alc = db.session.execute(sql, {"alcohol_id": alcohol_id}).fetchone()
         return alc, ""
     return False, "Ei löytynyt."
 
