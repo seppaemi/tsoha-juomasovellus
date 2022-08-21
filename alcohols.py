@@ -26,10 +26,10 @@ def list_alcohols(tag_id=None):
 
 
 def list_own_alcohols(id):
-    sql = """SELECT id, title 
-             FROM alcohols
-             WHERE creator_id=:id
-             AND visible=1
+    sql = """SELECT A.id, A.title 
+             FROM alcohols A
+             WHERE A.creator_id=:id
+             AND A.visible=1
              ORDER BY id DESC"""
     alcs = db.session.execute(sql, {"id": id}).fetchall()
     return alcs
