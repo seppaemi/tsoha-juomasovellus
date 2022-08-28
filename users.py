@@ -32,7 +32,7 @@ def create_user(username, password, password_2, role):
     try:
         db.session.execute(sql, {"username": username, "hash_value": hash_value, "role": role})
     except:
-        return False, "Käyttäjätunnus on varattu."
+        return False, "Käyttäjätunnus on varattu tms."
     db.session.commit()
     return True, f"Tunnus {username} luotu onnistuneesti!"
 
