@@ -67,7 +67,7 @@ def get_average(alcohol_id):
              FROM grades 
              WHERE alcohol_id=:alcohol_id"""
     average = db.session.execute(sql, {"alcohol_id": alcohol_id}).fetchone()[0]
-    return "Ei arvosteluja" if not average else average
+    return "Ei arvosteluja :)" if not average else average
 
 
 def check_grade(grade):
