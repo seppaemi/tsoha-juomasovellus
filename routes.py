@@ -66,7 +66,7 @@ def add_alcohol():
         description = request.form["description"]
         instruction = request.form["instruction"]
         ingredients = request.form.getlist("ingredient")
-        tags = request.form.getlist("tag")
+        tags = request.form["tag"]
         add_ok, msg, alcohol_id = alcohols.add_alcohol(title, description,
                                                     instruction, ingredients, tags)
         if not add_ok:
