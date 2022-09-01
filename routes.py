@@ -11,10 +11,10 @@ def index():
     return render_template("index.html")
 
 
-#@app.errorhandler(404)
-#def page_not_found(e):
-    #msg = "Hakemaa sivua ei löytynyt."
-    #return render_template("error.html", error=msg), 404
+@app.errorhandler(404)
+def page_not_found(e):
+    msg = "Hakemaasi sivua ei löytynyt."
+    return render_template("error.html", error=msg), 404
 
 
 @app.route("/all-alcs", methods=["GET", "POST"])
@@ -65,8 +65,8 @@ def add_alcohol():
         title = request.form["title"]
         description = request.form["description"]
         instruction = request.form["instruction"]
-        ingredients = request.form.getlist("note")
-        tags = request.form["tag"]
+        ingredients = request.form.getlist("ingredient")
+        tags = request.form.getlist("tag")
         add_ok, msg, alcohol_id = alcohols.add_alcohol(title, description,
                                                     instruction, ingredients, tags)
         if not add_ok:
