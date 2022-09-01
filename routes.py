@@ -11,10 +11,10 @@ def index():
     return render_template("index.html")
 
 
-@app.errorhandler(404)
-def page_not_found(e):
-    msg = "Hakemaasi sivua ei löytynyt."
-    return render_template("error.html", error=msg), 404
+#@app.errorhandler(404)
+#def page_not_found(e):
+    #msg = "Hakemaa sivua ei löytynyt."
+    #return render_template("error.html", error=msg), 404
 
 
 @app.route("/all-alcs", methods=["GET", "POST"])
