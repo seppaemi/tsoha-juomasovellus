@@ -5,7 +5,7 @@
 <div class="content">
   {% if session.username %}
   <h2>Lisää uusi alkoholi</h2>
-  <form action="/add-alcohol" method="POST" onsubmit="return check(this)">
+  <form action="/add-alc" method="POST" onsubmit="return check(this)">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     Nimi: <br>
     <p>
@@ -24,11 +24,11 @@
     </p>
     Käyttösuositus: <br>
     <p>
-      <textarea name="persentage" maxlength="2000"></textarea>
+      <textarea name="persentage" maxlength="8"></textarea>
     </p>
     <p><b>Kategoria</b></p>
     <label for="categories">Choose a category:</label>
-    <select name="tag" value="{{tag}}">
+    <select name="categories" value="{{category}}">
     <option value="valkoviini">Valkoviini</option>
     <option value="punaviini">Punaviini</option>
     <option value="kuohuviini">Kuohuviini</option>
