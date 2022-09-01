@@ -1,3 +1,4 @@
+
 from db import db
 from flask import session
 
@@ -67,7 +68,7 @@ def get_average(alcohol_id):
              FROM grades 
              WHERE alcohol_id=:alcohol_id"""
     average = db.session.execute(sql, {"alcohol_id": alcohol_id}).fetchone()[0]
-    return "Ei arvosteluja" if not average else average
+    return "Ei arvosteluja :)" if not average else average
 
 
 def check_grade(grade):
@@ -79,6 +80,42 @@ def check_grade(grade):
     except:
         return False
 
+
+def alcohol_exists(alcohol_id):
+    try:
+        sql = """SELECT COUNT(*) 
+                FROM alcohols 
+                WHERE id=:alcohol_id 
+                AND visible=1"""
+        result = db.session.execute(sql, {"alcohol_id": alcohol_id}).fetchone()[0]
+        return result
+    except:
+        return False
+
+
+def check_comment(comment):
+    if len(comment) == 0:
+        return False, "Kommentti on tyhjä."
+    if len(comment) > 1000:
+        return False, "Kommentti on liian pitkä."
+    return True, ""
+
+
+def is_own_comment(comment_id):
+    sql = """SELECT sender_id 
+             FROM comments 
+             WHERE id=:comment_id"""
+    sender = db.session.execute(sql, {"comment_id": comment_id}).fetchone()
+    if not sender or sender[0] != session["user_id"]:
+        return False
+    return True
+
+
+def admin():
+    try:
+        return session["role"] == "admin"
+    except:
+        return False
 
 def alcohol_exists(alcohol_id):
     try:
