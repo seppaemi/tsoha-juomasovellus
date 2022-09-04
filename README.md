@@ -35,3 +35,5 @@ https://tsoha-juomasovellus.herokuapp.com/
 - kommenttien lisääminen aloitettu ja ne toimivat vielä jonkin aikaa sitten
 - db.session.execute(sql).fetchall() 'NoneType' object has no attribute 'drivername' korjataan loppupalautukseen mennessä mikäli osataan
 - Korjaan taulut loppupalautukseen mennessä koska jostain syystä niissäkin on programmingerror
+### loppupalautus:
+- sovellusta ei saatu toimimaan heroku verkkoympäristössä, vaikka se toimikin lokaalisti, jätin siis loppupalautukseen projektin kesken
